@@ -10,6 +10,28 @@
 
 を明示的な状態として扱い、AIが途中で終了した場合や結果が不確実な場合でも、安全に再開できることを重視しています。
 
+## Architecture
+
+```mermaid
+flowchart LR
+    A[Task] --> B[Plan / Approval]
+    B --> C[AI Execution\nCodex / Claude Code]
+    C --> D[Validation\nTests / Validators]
+    D --> E[Review]
+    E --> F{Result known?}
+    F -->|YES| G[Accept / Continue]
+    F -->|NO| H[OUTCOME_UNKNOWN]
+    H --> I[Readback / Reconcile]
+    I -->|Applied| G
+    I -->|Not applied| J[Safe Retry]
+    J --> C
+
+    K[GitHub / CI] --> D
+    K --> I
+```
+
+このProjectでは、AI実行そのものよりも、**状態・証拠・検証・回復を含む実行ループ全体**を設計対象にしています。
+
 ## 主なテーマ
 
 - Task / Run state
