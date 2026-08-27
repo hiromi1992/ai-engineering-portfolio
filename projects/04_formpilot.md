@@ -4,6 +4,28 @@
 
 Windows向けDesktop Applicationとして、入力データ、Campaign設定、実行Queue、Retry / Recovery、Observabilityを段階的に実装しているProjectです。
 
+## Architecture
+
+```mermaid
+flowchart LR
+    A[React Renderer] --> B[Narrow IPC Bridge]
+    B --> C[Electron Main]
+    C --> D[Application Services]
+    D --> E[(SQLite)]
+    D --> F[(PostgreSQL)]
+    D --> G[Queue / Checkpoint]
+    G --> H[Retry / Recovery]
+    D --> I[Automation Events]
+    I --> J[Reason Codes / Observability]
+
+    K[Unit Tests] --> D
+    L[Authenticated Electron E2E] --> A
+    M[GitHub Actions CI] --> K
+    M --> L
+```
+
+Desktop UIだけでなく、**Local Persistence・Authentication・State・Recovery・Observability・E2Eまで含むSoftware Delivery**を扱っています。
+
 ## 技術
 
 - TypeScript
