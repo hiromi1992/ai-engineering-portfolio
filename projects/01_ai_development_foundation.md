@@ -2,57 +2,63 @@
 
 ## 概要
 
-複数のAI開発タスクを、途中終了・状態不明・再実行・レビュー漏れなどに強い形で進めるためのAI開発共通基盤 / Loop Runtimeです。
+複数のAI開発タスクを、途中終了・状態不明・再実行・レビュー漏れなどに強い形で進めるための共通開発基盤です。
 
 単にAIへ依頼を投げるのではなく、
 
-**Task → Plan / Approval → Execution → Validation → Review → Result → Recovery / Continuation**
+**タスク → 計画・承認 → AI実行 → 検証 → レビュー → 結果確認 → 回復・継続**
 
 を明示的な状態として扱い、AIが途中で終了した場合や結果が不確実な場合でも、安全に再開できることを重視しています。
 
-## Architecture
+## 全体像
 
 ```mermaid
 flowchart LR
-    A[Task] --> B[Plan / Approval]
-    B --> C[AI Execution\nCodex / Claude Code]
-    C --> D[Validation\nTests / Validators]
-    D --> E[Review]
-    E --> F{Result known?}
-    F -->|YES| G[Accept / Continue]
-    F -->|NO| H[OUTCOME_UNKNOWN]
-    H --> I[Readback / Reconcile]
-    I -->|Applied| G
-    I -->|Not applied| J[Safe Retry]
+    A[タスク] --> B[計画・承認]
+    B --> C[AI実行\nCodex / Claude Code]
+    C --> D[テスト・検証]
+    D --> E[レビュー]
+    E --> F{結果を確認できたか}
+    F -->|はい| G[受入・継続]
+    F -->|不明| H[結果不明]
+    H --> I[GitHub等の実状態を再確認]
+    I -->|適用済み| G
+    I -->|未適用| J[安全に再実行]
     J --> C
 
     K[GitHub / CI] --> D
     K --> I
 ```
 
-このProjectでは、AI実行そのものよりも、**状態・証拠・検証・回復を含む実行ループ全体**を設計対象にしています。
+AI実行そのものよりも、**状態・証拠・検証・回復を含む実行ループ全体**を設計対象にしています。
 
-## 主なテーマ
+## 主な実装テーマ
 
-- Task / Run state
-- execution control
-- validation / regression
-- retry / recovery / continuation
-- stale result detection
-- GitHub integration
-- review orchestration
-- fail-closed safety
+- タスク・実行単位の状態管理
+- 実行制御
+- テスト・回帰検証
+- 再試行・回復・継続
+- 古い結果の検知
+- GitHub連携
+- AIレビュー連携
+- 不明な場合は処理を止める安全設計
 - CIによる継続検証
-- reusable Skill / Contract化
+- 共通スキル・共通ルール化
 
-## Representative Evidence
+## 実装・検証の例
 
-- review executor safety bindingのtargeted tests: **23 / 23 PASS**
-- Validation regression: **1 positive baseline + 37 negative mutations**
-- GitHub ActionsでFoundation / Runtime系workflowを継続検証
-- exact revisionとCI結果をbindingし、古い結果を現在HeadのEvidenceとして扱わない設計
-- `OUTCOME_UNKNOWN`時のblind retry抑止
-- authority / approval / executionを分離したstate boundary
+- レビュー実行の安全性に関するテスト: **23 / 23 PASS**
+- 回帰検証: **正常系1件 + 意図的な破壊ケース37件**
+- GitHub Actionsで基盤・実行系の処理を継続検証
+- 対象RevisionとCI結果を紐付け、古い結果を現在の証拠として扱わない
+- 結果不明時に状態確認なしで再実行しない
+- 承認・実行・完了判定の責任範囲を分離
+
+## 公開コード
+
+[AI実装結果の安全な適用サンプル](../samples/result_apply_guard.py)
+
+実プロジェクトで使っている、対象Git Headの一致確認・変更範囲制限・状態遷移・結果不明時の再実行防止を単純化して公開しています。
 
 ## 私の役割
 
@@ -60,11 +66,11 @@ flowchart LR
 - 要件・状態モデル・安全境界の設計
 - Codex / Claude Codeへの詳細実装委譲
 - 実装差分の確認
-- test / regression観点の追加
-- CI / GitHub stateのreadback
-- failure root causeの切り分け
+- テスト・回帰観点の追加
+- CI / GitHub実状態の確認
+- 不具合原因の切り分け
 - 修正方針と受入可否の判断
 
-## このProjectで示したいこと
+## このプロジェクトで示したいこと
 
-AIエージェントを実運用する場合、モデル性能だけでなく、**状態・権限・再試行・回復・Evidence・検証・可観測性**が重要だと考えています。
+AIエージェントを実運用する場合、モデル性能だけでなく、**状態・権限・再試行・回復・検証可能な証拠・可観測性**が重要だと考えています。
