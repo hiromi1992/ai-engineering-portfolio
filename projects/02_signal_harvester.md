@@ -8,6 +8,28 @@ GitHub / Hacker News / RSS / Webなど複数SourceからSignalを取得し、**�
 
 という流れを重視しています。
 
+## Architecture
+
+```mermaid
+flowchart LR
+    A1[GitHub] --> B[Source Registry / Provider]
+    A2[Hacker News] --> B
+    A3[RSS / Atom] --> B
+    A4[Web] --> B
+    B --> C[Fetch / Extract]
+    C --> D[Normalize]
+    D --> E[Run History]
+    E --> F[Delta Detection]
+    F --> G[Evidence]
+    F --> H[Provenance]
+    G --> I[Canonical Signal]
+    H --> I
+    E --> J[Network-free Replay]
+    J --> K[Evaluation / Regression]
+```
+
+単なる収集ではなく、**後から「何を・いつ・どのSource/取得方法から得たか」を再構成できること**を重視しています。
+
 ## 主な実装
 
 - GitHub / Hacker News observation
