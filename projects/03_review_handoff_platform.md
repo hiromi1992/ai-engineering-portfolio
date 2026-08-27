@@ -8,6 +8,30 @@ AIが実装・レビューを担当する際に、**「何のTaskに対する、
 
 のbindingを明示し、AIの自己申告だけで完了扱いしない設計にしています。
 
+## Architecture
+
+```mermaid
+flowchart LR
+    A[Request / Task Binding] --> B[Frozen Input]
+    B --> C[AI Execution]
+    C --> D[Result Package]
+    D --> E[Validation]
+    E --> F[GitHub Readback]
+    F --> G{Exact binding valid?}
+    G -->|YES| H[Reconciliation]
+    G -->|NO| I[Reject / Handoff]
+    H --> J{Outcome known?}
+    J -->|Applied| K[Accept]
+    J -->|Not applied| L[Safe Retry Candidate]
+    J -->|Unknown| M[OUTCOME_UNKNOWN]
+    M --> F
+
+    N[Current Head / CI / Allowlist] --> E
+    N --> F
+```
+
+AIの出力そのものではなく、**GitHub上の実状態・対象Revision・CI・許可された変更範囲まで照合して結果を確定する**ことを重視しています。
+
 ## 主な実装テーマ
 
 - Repository / Task binding
