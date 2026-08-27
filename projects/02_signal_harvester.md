@@ -2,74 +2,80 @@
 
 ## 概要
 
-GitHub / Hacker News / RSS / Webなど複数SourceからSignalを取得し、**履歴・差分・Evidence・Provenanceを保持しながら再現可能に扱う情報収集基盤**です。
+GitHub / Hacker News / RSS / Webなど複数の情報源から情報を取得し、**履歴・差分・取得証拠・出典情報を保持しながら再現可能に扱う情報収集基盤**です。
 
-**Source → Fetch → Normalize → Persist History → Delta → Evidence / Provenance → Canonical Signal → Replay**
+**情報源 → 取得 → 正規化 → 履歴保存 → 差分検知 → 取得証拠・出典管理 → 統一形式のSignal → 再検証**
 
 という流れを重視しています。
 
-## Architecture
+## 全体像
 
 ```mermaid
 flowchart LR
-    A1[GitHub] --> B[Source Registry / Provider]
+    A1[GitHub] --> B[情報源・取得方法の管理]
     A2[Hacker News] --> B
     A3[RSS / Atom] --> B
     A4[Web] --> B
-    B --> C[Fetch / Extract]
-    C --> D[Normalize]
-    D --> E[Run History]
-    E --> F[Delta Detection]
-    F --> G[Evidence]
-    F --> H[Provenance]
-    G --> I[Canonical Signal]
+    B --> C[取得・本文抽出]
+    C --> D[正規化]
+    D --> E[履歴保存]
+    E --> F[差分検知]
+    F --> G[取得証拠]
+    F --> H[出典・取得履歴]
+    G --> I[統一形式のSignal]
     H --> I
-    E --> J[Network-free Replay]
-    J --> K[Evaluation / Regression]
+    E --> J[保存済みデータから再検証]
+    J --> K[評価・回帰検証]
 ```
 
-単なる収集ではなく、**後から「何を・いつ・どのSource/取得方法から得たか」を再構成できること**を重視しています。
+単なる収集ではなく、**後から「何を・いつ・どの情報源・取得方法から得たか」を再構成できること**を重視しています。
 
 ## 主な実装
 
-- GitHub / Hacker News observation
+- GitHub / Hacker Newsの観測
 - RSS 2.0 / Atom 1.0
-- bounded Web retrieval
-- Source Registry
-- Provider separation
-- normalized item persistence
-- run history
-- delta-first comparison
-- immutable Evidence artifacts
-- Provenance snapshot
-- versioned Signal identity
-- network-free replay
-- fixture / mock based regression tests
+- 条件付きWeb取得
+- 情報源の登録・管理
+- 情報源と取得手段の分離
+- 正規化データの保存
+- 実行履歴
+- 差分優先の比較
+- 改変されない取得証拠
+- 出典・取得履歴の保存
+- Signal識別子のVersion管理
+- ネットワークへ再アクセスしない再検証
+- fixture / mockを使った回帰テスト
 
 ## 設計上のポイント
 
-### Evidence / Provenance
-「どこから取得した情報か」「どの方法・時点で取得したか」を後から追跡できることを重視しています。
+### 取得証拠・出典情報
+「どこから取得したか」「どの方法・時点で取得したか」を後から追跡できるようにしています。
 
-### Replay
-保存済みRunを利用し、Networkへ再アクセスせずに評価・再現できる構造にしています。
+### 再検証
+保存済みの取得結果を利用し、ネットワークへ再アクセスせずに評価・再現できる構造にしています。
 
-### Source / Provider分離
-情報源そのものと取得手段を分離し、取得方法が変わってもSignal identityを安易に壊さない設計を意識しています。
+### 情報源と取得方法の分離
+情報源そのものと取得手段を分離し、取得方法が変わってもSignalの識別を安易に壊さない設計にしています。
 
-### Fail-closed
-Source approvalや取得条件を満たさない場合に、勝手にLive Fetchへ進まない設計です。
+### 不明時は取得しない
+利用条件や取得可否を確認できない場合に、自動でLive取得へ進まない安全側の設計です。
+
+## 公開コード
+
+[取得証拠の検証と再現サンプル](../samples/evidence_verification.js)
+
+実装しているSHA-256による本文固定、引用位置の検証、改ざん検知、保存済みデータからの再検証を単純化して公開しています。
 
 ## 私の役割
 
-- Product / Requirements設計
-- Data contract / identity / provenance方針
-- implementation decomposition
-- AI-assisted implementation
-- test / regression / replay観点の設計
-- diff / CI / behavior確認
+- 製品要件・仕様設計
+- データ形式・識別子・出典管理方針の設計
+- 実装タスクの分解
+- AI支援による実装
+- テスト・回帰・再検証観点の設計
+- 差分・CI・動作確認
 - 仕様と実装の不一致修正
 
-## このProjectで示したいこと
+## このプロジェクトで示したいこと
 
-単純なCrawlerではなく、**Data Pipeline / Canonicalization / Temporal Data / Provenance / Evaluation-ready Data**を意識した情報基盤を設計・実装しています。
+単純なCrawlerではなく、**データ処理基盤・統一形式化・時間情報・出典管理・評価可能なデータ**を意識して設計・実装しています。
