@@ -4,6 +4,26 @@ Claude Code / Codex などのAI開発支援を使いながら、**問題設定�
 
 主な関心領域は、AIエージェント、情報収集・データ基盤、検索・知識基盤、評価・可観測性、本番運用、意思決定支援です。
 
+## まず見てほしい2つ
+
+採用選考で短時間に確認いただく場合は、まず以下の2つを見ると開発スタイルが伝わりやすいです。
+
+### 1. AI Development Foundation / Review・Handoff基盤
+
+AIの実装結果を自己申告だけで完了扱いせず、**対象Git Head・変更許可範囲・実際の適用結果を照合し、結果不明時には無闇に再実行しない**仕組みを扱っています。
+
+- [プロジェクト詳細](projects/01_ai_development_foundation.md)
+- [Python公開コード: AI実装結果の安全な適用](samples/result_apply_guard.py)
+- [Pythonテスト](samples/test_result_apply_guard.py)
+
+### 2. Signal Harvester
+
+複数の情報源から取得した情報を、**履歴・差分・取得証拠・出典情報と一緒に保存し、後から再検証できるデータ基盤**として設計しています。
+
+- [プロジェクト詳細](projects/02_signal_harvester.md)
+- [JavaScript公開コード: 取得証拠の検証と再現](samples/evidence_verification.js)
+- [JavaScriptテスト](samples/evidence_verification.test.js)
+
 ## 全体像
 
 ```mermaid
@@ -66,6 +86,7 @@ AIが生成したコードをそのまま採用するのではなく、**仕様�
 - Signal Harvesterで、履歴・差分・取得証拠・出典情報・ネットワーク再取得なしの再検証を実装
 - Review / Handoff Platformで、古いGit Head・許可範囲外の変更・不正な状態遷移を拒否
 - FormPilotで、型検査 / Lint / Unit Test / Build / 認証付きElectron E2EをCIで検証
+- この公開Portfolio自身でもGitHub Actionsで公開コードサンプルを自動テスト
 
 ## 技術スタック
 
