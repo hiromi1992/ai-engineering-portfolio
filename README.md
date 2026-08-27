@@ -4,6 +4,23 @@ AIを詳細実装のレバレッジとして使いながら、**問題設定・�
 
 主な関心領域は、AIエージェント、情報収集・データ基盤、検索・知識基盤、評価・可観測性、本番運用です。
 
+## Portfolio Architecture
+
+```mermaid
+flowchart LR
+    A[価値ある情報] --> B[Signal Harvester\n収集・正規化・履歴・Evidence]
+    B --> C[Knowledge / Search\n構造化・検索・分析]
+    C --> D[AI Agent / Decision Support\n推論・実行・意思決定支援]
+
+    E[AI Development Foundation\n状態・検証・回復・CI] --> B
+    E --> C
+    E --> D
+    F[Review / Handoff Platform\n結果Binding・Readback・Reconciliation] --> E
+    G[FormPilot\nDesktop App・Persistence・Recovery・E2E] --> E
+```
+
+4つのProjectは別々の実験ではなく、**情報を取得し、構造化し、AIが利用し、本番で安全に動かすために必要な能力を横断して検証するPortfolio**として位置づけています。
+
 ## 開発スタイル
 
 Claude Code / Codex などのAIコーディングエージェントを、詳細実装やレビュー支援に積極的に利用しています。
