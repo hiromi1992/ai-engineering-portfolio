@@ -1,92 +1,75 @@
 # FormPilot
 
-## 概要
+**Status:** Confirmed baseline through Phase 4 — **IMPLEMENTED**  
+**Later Form Automation phases:** **PARTIAL / under design & validation**
 
-Windows向けデスクトップアプリとして、入力データ、Campaign設定、実行キュー、再試行・回復、可観測性を段階的に実装しているプロジェクトです。
+## What this project is
 
-## 全体像
+Windows Desktopで、入力データ・Campaign・Queue・Authorization・Recovery等を扱う業務自動化Projectです。
 
-```mermaid
-flowchart LR
-    A[React画面] --> B[限定したIPC Bridge]
-    B --> C[Electron Main]
-    C --> D[Application Service]
-    D --> E[(SQLite)]
-    D --> F[(PostgreSQL)]
-    D --> G[実行キュー / Checkpoint]
-    G --> H[再試行 / 回復]
-    D --> I[Automation Event]
-    I --> J[失敗理由 / 可観測性]
+このPortfolioでは特に、**外部世界へ影響する処理を行うSoftwareを、State / Gate / Recovery / E2E込みでどう安全に作るか**を示すProjectとして位置づけています。
 
-    K[Unit Test] --> D
-    L[認証付きElectron E2E] --> A
-    M[GitHub Actions CI] --> K
-    M --> L
-```
+## Capabilities demonstrated
 
-画面だけでなく、**Local保存・認証・状態管理・回復・可観測性・E2Eまで含むSoftware Delivery**を扱っています。
+| Capability | Depth / Status |
+|---|---|
+| State / Gate / Authority | ● IMPLEMENTED |
+| Recovery / Retry | ● IMPLEMENTED |
+| Observability | ● IMPLEMENTED |
+| Evaluation / E2E | ● IMPLEMENTED |
+| Local Persistence | ● IMPLEMENTED |
+| External Action Safety | ● PARTIAL |
+| AI / Workflow Orchestration | ○ PARTIAL |
 
-## 技術
+## Implemented baseline
 
-- TypeScript
-- Electron
-- React
-- SQLite
-- PostgreSQL
-- pnpm
-- GitHub Actions
+- Electron + sandboxed React renderer
+- narrow IPC bridge
+- SQLite migration / campaign / target persistence
+- crash-safe queue / recovery foundation
+- PostgreSQL-backed workspace authentication / roles
+- sender / template / schedule / pacing / test-mode settings
+- Typecheck / Lint / Unit Test / Build / Desktop validation
 
-## 実装済みの主な領域
+Confirmed Phase 4では、外部HTTP/HTTPSアクセスや実送信を行わない境界を維持しています。
 
-- Electron sandbox / 限定したIPC bridge
-- SQLite migration
-- campaign / targetの永続化
-- crash-safeな実行キュー・回復基盤
-- workspace認証・権限境界
-- sender profile / template version
-- campaign settings
-- pacing / test mode
-- 自動処理イベント
-- 失敗理由コード
-- 再試行安全性の判定
-- 認証付きElectron E2E
+## Why it matters
 
-## 検証
+外部フォーム送信のような操作では、「処理を開始したか」「実行されたか」「結果不明か」を間違えると、二重送信等の実世界影響につながります。
 
-Phase 4ではGitHub Actions上で以下を確認しています。
+そこで、
 
-- Governance: PASS
-- Typecheck: PASS
-- Lint: PASS
-- Unit tests: PASS
-- Build: PASS
-- 認証付きElectron E2E: PASS
+- State
+- Queue
+- Checkpoint
+- Reason Code
+- Retry safety
+- Authorization
+- Readback
+- E2E
 
-Phase 5Aでは以下を追加しています。
+を分離して扱う方向で段階的に設計しています。
 
-- SQLiteへの自動処理イベント保存
-- 決定的な並び順
-- 複数試行の履歴
-- 失敗理由の分類
-- 終端イベントと関連状態のatomicな保存
-- 関連check PASS
+## My responsibility
 
-## 公開コード
+- Product / Phase requirement
+- State / persistence / authorization requirement
+- Coding Agentへの実装委譲
+- Migration / Recovery / E2E観点
+- CI / regression review
+- Phase scope control
+- Acceptance / Redesign判断
 
-[自動処理の再試行ポリシー](../samples/automation_retry_policy.ts)
+直接のコード生成は主にCoding Agentを利用しています。
 
-実プロジェクトで使っているCheckpoint・失敗理由・自動再試行可否の考え方を、依存関係を減らして公開しています。
+## Connections
 
-## 私の役割
+- **AI Development Foundation / RHP** — Gate / Readback / RecoveryをSoftware Deliveryへ適用
+- **Signal Harvester / ICP** — Observability / history / evidenceの考え方を共有
+- **Akashic Record** — 将来のDecision→Actionで必要になるExternal Action境界の学習へ接続
 
-- 製品要件・Phase設計
-- 画面・状態・永続化要件の整理
-- AI支援による実装
-- migration / authorization / recovery観点の確認
-- unit / E2E / CIの受入
-- 回帰リスクの確認
-- Phase単位でのscope control
+## Current gaps
 
-## このプロジェクトで示したいこと
-
-Web APIだけでなく、**デスクトップアプリ・Local保存・認証・状態管理・回復・E2E**を含むSoftware DeliveryもAI支援型で進めています。
+- Portfolioで確認できる確定BaselineではReal Form Submissionは未実装
+- Deterministic Form Engine以降は設計・検証が継続中
+- AI browser fallbackは確定Baselineの実装対象外
