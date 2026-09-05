@@ -1,66 +1,66 @@
-# Capability Coverage Map
+# 能力カバレッジ一覧
 
-このページは、**どの能力を・どのProductで・どの深さまで扱っているか**を横断して確認するためのIndexです。
+このページでは、**どの能力を・どのプロダクトで・どこまで扱っているか**を横断して確認できます。
 
-## Status
+## 状態の見方
 
-- **IMPLEMENTED** — 実装・検証済み
-- **PARTIAL** — 一部実装・限定条件で検証済み
-- **DESIGN** — 要件・設計段階
-- **NOT YET** — 未着手
+- **実装済み** — 実装・検証まで完了
+- **一部実装** — 限定条件では実装済み、または一部機能のみ実装
+- **設計段階** — 要件・設計まで
+- **未着手** — まだ扱っていない
 
-## Depth
+## 深さの見方
 
-- **● Primary** — そのProductの主要テーマ
-- **○ Applied** — 実際に利用・検証
-- **△ Exploration** — 探索・初期段階
+- **● 主領域** — そのプロダクトの中心テーマ
+- **○ 応用** — 実際に利用・検証
+- **△ 探索** — 初期検討・部分的な試行
 - **—** — 対象外
 
-## Coverage
+## 能力 × プロダクト
 
-| Capability | 概要 | AI Dev / RHP | Signal / ICP | FX / TPI | FormPilot | Akashic |
+| 能力 | 概要 | AI開発基盤 / RHP | Signal / ICP | FX / TPI | FormPilot | Akashic |
 |---|---|---|---|---|---|---|
-| **Problem / Requirement** | 課題を要件・受入条件へ落とす | ● IMPLEMENTED | ● IMPLEMENTED | ● IMPLEMENTED | ● IMPLEMENTED | ● DESIGN |
-| **AI Delivery Control** | AIへの委譲→Review→受入を制御 | ● IMPLEMENTED | ○ IMPLEMENTED | ○ IMPLEMENTED | ○ IMPLEMENTED | ● DESIGN |
-| **Agent Orchestration** | Agent/Workflowの役割・状態を制御 | ● PARTIAL | ○ PARTIAL | ○ PARTIAL | ○ PARTIAL | ● DESIGN |
-| **State / Gate / Authority** | 状態・権限・進行条件を固定 | ● IMPLEMENTED | ○ IMPLEMENTED | ○ IMPLEMENTED | ● IMPLEMENTED | ● DESIGN |
-| **Evaluation** | 出力をTest/Review/Readback等で評価 | ● IMPLEMENTED | ○ IMPLEMENTED | ● IMPLEMENTED | ● IMPLEMENTED | ● DESIGN |
-| **Evidence / Provenance** | 判断根拠と出典を追跡可能にする | ● IMPLEMENTED | ● IMPLEMENTED | ● IMPLEMENTED | ○ IMPLEMENTED | ● DESIGN |
-| **Temporal / as-of** | 時点・履歴・差分を保持 | ○ IMPLEMENTED | ● IMPLEMENTED | ● IMPLEMENTED | ○ IMPLEMENTED | ● DESIGN |
-| **Experiment / Holdout** | 実験条件を固定し汚染を防ぐ | ○ PARTIAL | ○ PARTIAL | ● IMPLEMENTED | ○ PARTIAL | ● DESIGN |
-| **Recovery / Retry** | 中断・失敗・結果不明から安全に復旧 | ● IMPLEMENTED | ○ IMPLEMENTED | ○ IMPLEMENTED | ● IMPLEMENTED | ○ DESIGN |
-| **External Action Safety** | 不可逆操作を安全境界付きで扱う | ○ PARTIAL | — | — | ● PARTIAL | ○ DESIGN |
-| **Observability** | 状態・失敗・履歴を追跡 | ● IMPLEMENTED | ● IMPLEMENTED | ○ IMPLEMENTED | ● IMPLEMENTED | ○ DESIGN |
-| **Calibration / Confidence** | 信頼度・不確実性を評価 | △ PARTIAL | △ PARTIAL | ○ PARTIAL | — | ● DESIGN |
-| **Judge / Selection** | 複数候補を評価・選択 | △ PARTIAL | — | ○ PARTIAL | — | ● DESIGN |
-| **Multi-Agent Competition** | 独立推論・競合仮説を扱う | △ PARTIAL | — | △ PARTIAL | — | ● DESIGN |
-| **Cross-Critique / Debate** | Agent同士の反証・批評 | △ PARTIAL | — | △ PARTIAL | — | ● DESIGN |
-| **Dynamic Routing** | 状況に応じてAgent/Modelを切り替える | △ DESIGN | — | — | — | ● DESIGN |
-| **Cost / Latency Routing** | 品質・費用・時間のTrade-offで選択 | △ DESIGN | — | — | — | ● DESIGN |
-| **Decision / Abstain** | 判断・保留・人へのEscalationを扱う | ○ PARTIAL | ○ PARTIAL | ● IMPLEMENTED | ○ PARTIAL | ● DESIGN |
+| **課題整理・要件定義** | 課題を実装可能な要件・受入条件へ落とす | ● 実装済み | ● 実装済み | ● 実装済み | ● 実装済み | ● 設計段階 |
+| **AI開発の進行管理** | AIへの委譲→レビュー→受入を制御する | ● 実装済み | ○ 実装済み | ○ 実装済み | ○ 実装済み | ● 設計段階 |
+| **複数AI / Workflow制御** | AIの役割分担・引継ぎ・処理順を管理する | ● 一部実装 | ○ 一部実装 | ○ 一部実装 | ○ 一部実装 | ● 設計段階 |
+| **状態・権限・進行条件** | 状態と権限を固定し、誤った進行を防ぐ | ● 実装済み | ○ 実装済み | ○ 実装済み | ● 実装済み | ● 設計段階 |
+| **評価・受入判断** | テスト・レビュー・実状態で結果を評価する | ● 実装済み | ○ 実装済み | ● 実装済み | ● 実装済み | ● 設計段階 |
+| **根拠・出典管理** | 判断根拠と出典を追跡可能にする | ● 実装済み | ● 実装済み | ● 実装済み | ○ 実装済み | ● 設計段階 |
+| **時点・履歴管理** | 取得時点・履歴・差分を保持する | ○ 実装済み | ● 実装済み | ● 実装済み | ○ 実装済み | ● 設計段階 |
+| **実験・未使用データ管理** | 評価条件を固定し、結果観測後の汚染を防ぐ | ○ 一部実装 | ○ 一部実装 | ● 実装済み | ○ 一部実装 | ● 設計段階 |
+| **失敗時の復旧・再試行** | 中断・失敗・結果不明から安全に復旧する | ● 実装済み | ○ 実装済み | ○ 実装済み | ● 実装済み | ○ 設計段階 |
+| **外部操作の安全設計** | 送信・更新など取り消しにくい操作を安全に扱う | ○ 一部実装 | — | — | ● 一部実装 | ○ 設計段階 |
+| **可観測性** | 状態・失敗理由・履歴を後から確認できるようにする | ● 実装済み | ● 実装済み | ○ 実装済み | ● 実装済み | ○ 設計段階 |
+| **信頼度・不確実性評価** | AI結果をどの程度信用できるかを扱う | △ 一部実装 | △ 一部実装 | ○ 一部実装 | — | ● 設計段階 |
+| **候補の評価・選択** | 複数候補を比較して選ぶ | △ 一部実装 | — | ○ 一部実装 | — | ● 設計段階 |
+| **複数AIの競合・独立推論** | 複数AIが別々に考え、仮説を比較する | △ 一部実装 | — | △ 一部実装 | — | ● 設計段階 |
+| **AI同士の批評・反証** | AI同士が互いの結果を批評・反証する | △ 一部実装 | — | △ 一部実装 | — | ● 設計段階 |
+| **動的なAI振り分け** | 問題に応じて使うAIや役割を切り替える | △ 設計段階 | — | — | — | ● 設計段階 |
+| **品質・速度・コストを見た振り分け** | 品質・処理時間・費用を見ながらAIを選ぶ | △ 設計段階 | — | — | — | ● 設計段階 |
+| **判断・保留・人への引継ぎ** | 自動判断せず保留・人確認へ切り替える | ○ 一部実装 | ○ 一部実装 | ● 実装済み | ○ 一部実装 | ● 設計段階 |
 
-## Strong today
+## 現在強い領域
 
-- **AI Delivery / State / Gate / Recovery**
-- **Evaluation / Acceptance**
-- **Evidence / Provenance / as-of**
-- **Experiment / Holdout**
-- **Production-oriented observability**
+- **AI開発の進行管理 / 状態管理 / 復旧**
+- **評価・受入判断**
+- **根拠・出典・時点管理**
+- **実験・未使用データ管理**
+- **可観測性**
 
-## Main gaps
+## 現在の主な不足領域
 
-- **Multiple Brain × Multiple Lens**
-- **Competing hypotheses / Cross-Critique**
-- **Dynamic Agent / Model Routing**
-- **Judge Ensemble / Advanced Selection**
-- **Calibration / Confidence / Uncertainty**
+- **複数AIが独立して考え、競合・統合する仕組み**
+- **AI同士の批評・反証**
+- **問題に応じたAI / Modelの自動振り分け**
+- **複数評価者による選択**
+- **信頼度・不確実性の高度な評価**
 
-このGapは隠さず、今後の学習・実務経験の獲得対象として扱っています。
+不足領域も隠さず、今後の実務経験・学習対象として扱っています。
 
-## Product connections
+## 各プロダクトの役割
 
-- **AI Development Foundation / RHP** — AI Deliveryそのものを制御
-- **Signal Harvester / ICP** — 判断に使うEvidenceを整備
-- **FX Intelligence / TPI** — HypothesisとEvaluationを厳密化
-- **FormPilot** — State / Recovery / External Actionへ適用
-- **Akashic Record** — 上記をMulti-Agent Decision Intelligenceへ統合するDesign North Star
+- **AI開発基盤 / RHP** — AIに仕事を任せる工程そのものを管理する
+- **Signal Harvester / ICP** — 判断に使う情報の根拠・出典・時点を整える
+- **FX Intelligence / TPI** — 仮説と評価を厳密に扱う
+- **FormPilot** — 状態管理・復旧・外部操作の考え方を業務アプリへ適用する
+- **Akashic Record** — 上記を複数AIによる意思決定支援へ統合する構想
