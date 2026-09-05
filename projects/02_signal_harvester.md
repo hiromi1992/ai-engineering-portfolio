@@ -1,11 +1,11 @@
 # Signal Harvester / ICP
 
-**Status:** Core collection / history / replay / evidence — **IMPLEMENTED**  
-**Broader external observation runtime:** **PARTIAL / expanding**
+**現在の状態:** 情報収集・履歴・再検証・根拠管理の主要部分は **実装済み**  
+**外部観測の拡張:** 一部実装・継続開発中
 
-## What this project is
+## 何をするものか
 
-GitHub / Hacker News / RSS / Web等から取得した情報を、**Evidence・Provenance・History・Delta・as-ofを保ったまま後段AIへ渡す**ための情報基盤です。
+GitHub / Hacker News / RSS / Webなどから取得した情報を、**出典・取得時点・履歴・変更内容を残したまま後段AIへ渡す**ための情報基盤です。
 
 単なるCrawlerではなく、
 
@@ -13,73 +13,73 @@ GitHub / Hacker News / RSS / Web等から取得した情報を、**Evidence・Pr
 
 を後から再検証できることを重視しています。
 
-## Capabilities demonstrated
+## このプロダクトで扱っている能力
 
-| Capability | Depth / Status |
+| 能力 | 現在地 |
 |---|---|
-| Evidence / Provenance | ● IMPLEMENTED |
-| Temporal / as-of / History | ● IMPLEMENTED |
-| Replay / Reproducibility | ● IMPLEMENTED |
-| Delta / Change Detection | ● IMPLEMENTED |
-| Observability | ● IMPLEMENTED |
-| Evaluation | ○ IMPLEMENTED |
-| Agent / Workflow Orchestration | ○ PARTIAL |
-| Calibration / Confidence | △ PARTIAL |
+| 根拠・出典管理 | ● 実装済み |
+| 時点・履歴管理 | ● 実装済み |
+| 保存済みデータからの再検証 | ● 実装済み |
+| 差分検知 | ● 実装済み |
+| 可観測性 | ● 実装済み |
+| 評価・再現性 | ○ 実装済み |
+| 複数処理 / Workflow制御 | ○ 一部実装 |
+| 信頼度・不確実性評価 | △ 一部実装 |
 
-## Problem
+## 解きたかった問題
 
-後段でAI分析や意思決定に使う場合、単純な収集だけでは不足します。
+AI分析や意思決定に使う場合、単純な情報収集だけでは不足します。
 
-- 転載や再取得を独立したEvidenceとして数えてしまう
-- Web更新後に「当時何を読んだか」が再現できない
-- 引用が元本文のどこに存在したか追えない
-- SourceとRetrieval Methodを混同する
-- 過去評価を再実行するとLive Webの未来情報が混ざる
+- 同じ情報の転載・再取得を別の根拠として数えてしまう
+- Webが更新されると、当時何を読んだか再現できない
+- AIが使った引用が元本文のどこにあったか追えない
+- 「どの情報源か」と「どう取得したか」を混同しやすい
+- 過去の評価をやり直すと未来の更新情報が混ざる
 
-## Key decisions
+## 主な設計判断
 
-### Preserve evidence, not just extracted values
-本文・Hash・取得時刻・Source・Provider等を分けて保存します。
+### 1. 取得結果そのものを残す
+本文・Hash・取得時刻・情報源・取得方法などを分けて保存します。
 
-### Replay stays network-free
-過去Runの再検証では保存済みデータを使い、Live Networkへ取り直さないことを重視します。
+### 2. 過去の再検証ではWebへ取り直さない
+過去Runの再検証では保存済みデータを使い、Live Webの更新内容を混ぜないようにします。
 
-### Source and retrieval are separate concepts
-「何の情報か」と「どう取得したか」を分離し、Provider変更でもSource identityを壊さないようにします。
+### 3. 情報源と取得方法を分ける
+「何の情報か」と「どう取得したか」を分離し、取得手段が変わっても情報源の識別を壊さないようにします。
 
-### Expansion is fail-closed
-外部取得の拡張では、承認・Policy・Provider条件等が揃わなければFetchしない設計を採用しています。
+### 4. 条件が揃わない外部取得は止める
+外部取得を拡張する際も、承認・Policy・取得条件などが揃わなければ実行しない設計にしています。
 
-## Evidence
+## 検証していること
 
-- GitHub / Hacker News observation
+- GitHub / Hacker Newsの観測
 - RSS 2.0 / Atom 1.0
-- Run History / Delta
-- replay without network access
-- immutable extracted Evidence
-- Provenance snapshots
-- versioned Signal identity
-- fixture / mockによるRegression
+- 実行履歴・差分
+- 保存済みデータだけを使った再検証
+- 改変検知できる取得証拠
+- 出典情報の保存
+- Signal識別子のVersion管理
+- fixture / mockによる回帰テスト
 
-## My responsibility
+## 本人の担当
 
-- Product requirement / data contract設計
-- Identifier / Provenance / as-of方針
+- 製品要件・データ形式の設計
+- 識別子・出典・時点管理方針の設計
 - Coding Agentへの実装委譲
-- Test / replay / regression観点
-- Diff / CI / result review
+- テスト・再検証・回帰観点の設計
+- 差分・CI・結果確認
 - 仕様と実装の不一致に対する修正判断
 
 直接のコード生成は主にCoding Agentを利用しています。
 
-## Connections
+## 他プロダクトとのつながり
 
-- **AI Development Foundation / RHP** — Evidence / Readbackで受入する思想を共有
-- **FX Intelligence / TPI** — 時点・履歴・再現可能なEvidenceをExperimentへ接続
-- **Akashic Record** — 将来のReasoningが依存するCanonical Evidence layerへ接続
+- **AI開発基盤 / RHP** — 実状態・根拠を確認して受け入れる考え方を共有
+- **FX Intelligence / TPI** — 時点・履歴・再現可能なデータをExperimentへ接続
+- **Akashic Record** — 将来のAI分析が依存する根拠データ層へ接続
 
-## Current gaps
+## まだできていないこと
 
-- 全Sourceを常時観測するProduction-scale runtimeではない
-- Source coverage / scheduler healthは拡張・運用上の課題
-- Multi-Agent reasoning自体はこのProjectの責務外
+- すべての情報源を安定して常時観測する本番Runtime
+- 情報源ごとの観測範囲・定期実行の安定化
+- 複数AIによる推論そのものはこのプロダクトの対象外
