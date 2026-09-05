@@ -1,113 +1,95 @@
-# AI Development Foundation / Loop Engineering
+# AI Development Foundation / Review-Handoff Platform
 
-## 概要
+**Status:** Core integrity / result-application contracts — **IMPLEMENTED**  
+**Live dispatch:** **PARTIAL / intentionally constrained**
 
-複数のAI開発タスクを、途中終了・状態不明・再実行・レビュー漏れなどに強い形で進めるための共通開発基盤です。
+## What this project is
 
-単にAIへ依頼を投げるのではなく、
+AI/Coding Agentへ開発を委譲するときに、**「AIが完了と言った」ことではなく、実際のRepository・Revision・CI・変更範囲を確認して受入する**ための共通基盤です。
 
-**タスク → 計画・承認 → AI実行 → 検証 → レビュー → 結果確認 → 回復・継続**
-
-を明示的な状態として扱い、AIが途中で終了した場合や結果が不確実な場合でも、安全に再開できることを重視しています。
-
-## 全体像
-
-```mermaid
-flowchart LR
-    A[タスク] --> B[計画・承認]
-    B --> C[AI実行\nCodex / Claude Code]
-    C --> D[テスト・検証]
-    D --> E[レビュー]
-    E --> F{結果を確認できたか}
-    F -->|はい| G[受入・継続]
-    F -->|不明| H[結果不明]
-    H --> I[GitHub等の実状態を再確認]
-    I -->|適用済み| G
-    I -->|未適用| J[安全に再実行]
-    J --> C
-
-    K[GitHub / CI] --> D
-    K --> I
+```text
+Goal / Requirement
+      ↓
+Plan / Gate
+      ↓
+Coding Agent
+      ↓
+Test / Review
+      ↓
+Readback
+      ↓
+Accept / Reject / Recover
+      ↓
+Handoff / Learning
 ```
 
-AI実行そのものよりも、**状態・証拠・検証・回復を含む実行ループ全体**を設計対象にしています。
+## Capabilities demonstrated
 
-## 解きたかった問題
+| Capability | Depth / Status |
+|---|---|
+| AI Delivery Control | ● IMPLEMENTED |
+| State / Gate / Authority | ● IMPLEMENTED |
+| Evaluation / Acceptance | ● IMPLEMENTED |
+| Independent Review | ● IMPLEMENTED |
+| Recovery / Retry | ● IMPLEMENTED |
+| Evidence / Readback | ● IMPLEMENTED |
+| Agent Orchestration | ● PARTIAL |
+| Dynamic Routing | △ DESIGN |
 
-AIに実装を任せると、単純なコード生成以外に次の問題が起きます。
+## Problem
+
+AI-assisted developmentでは、コード生成以外に次の問題が起きます。
 
 - 実行途中で止まり、どこまで完了したか分からない
-- AIが「完了」と答えてもGitHub側の実状態と一致しない
-- 古いRevisionに対するレビュー結果を誤って現在の結果として扱う
-- 書き込み結果が不明なまま再実行して二重変更する
-- 本来変更してはいけないファイルまで修正対象が広がる
+- AIが成功と返してもGitHub上の実状態と一致しない
+- 古いRevisionへのReviewを現在の結果として扱ってしまう
+- 書き込み結果不明のまま再実行して二重変更する
+- 許可していない範囲まで変更が広がる
 
-そこで、**AIの発言ではなく外部システムの実状態を基準に完了を判断する**方向へ設計を寄せています。
+## Key decisions
 
-## 代表的な設計判断
+### External state is authority
+AI / CI / Reviewerの自己申告だけで終了状態を確定しません。Repositoryや対象Revisionなどの実状態をReadbackして判断します。
 
-### 1. 対象Revisionを固定する
+### Unknown is a real state
+結果不明を成功・失敗へ丸めず、確認できるまでBlind retryを止めます。
 
-AIへ渡したタスクとGit Headを紐付け、結果を適用する直前にも現在Headを確認します。Headが動いていた場合は、古い結果をそのまま適用しません。
+### Scope is bound before execution
+対象Repository / Task / Revision /変更可能範囲を先に固定し、古い結果や範囲外変更を拒否します。
 
-### 2. 変更可能な範囲を先に決める
+### Dispatch authority is separated
+RHP自身はCodexやGitHubへの無制限なLive dispatch権限を持ちません。現在の実装ではDry-run / coordinator境界を明示しています。
 
-タスクごとに変更可能なファイル範囲を持たせ、結果に範囲外の変更が含まれていた場合は止めます。
+## Evidence
 
-### 3. 結果不明を成功・失敗へ丸めない
+- Review安全性のTest
+- stale Head / allowlist escape / illegal state transitionの拒否
+- OUTCOME_UNKNOWNからのBlind retry防止
+- GitHub Result Readback
+- Ubuntu / Windowsでの検証
+- Billing / Usage readbackが安全条件を証明できない場合のfail-closed
 
-書き込み要求後に応答が失われた場合などは「結果不明」として扱います。この状態では再実行せず、GitHub側の状態を確認してから次の処理を決めます。
+## My responsibility
 
-### 4. 終了状態は実状態確認から確定する
+- 問題定義
+- Requirement / State model / Authority boundary設計
+- Coding Agentへの実装委譲
+- Test / Regression観点の設計
+- Diff / CI / Readback確認
+- Findingの分析
+- Acceptance / Reject / Redesign判断
 
-「適用済み」「未適用」といった最終状態を、AIや実行処理の自己申告だけでは直接設定できないようにしています。
+直接のコード生成は主にCoding Agentを利用しています。
 
-## 主な実装テーマ
+## Connections
 
-- タスク・実行単位の状態管理
-- 実行制御
-- テスト・回帰検証
-- 再試行・回復・継続
-- 古い結果の検知
-- GitHub連携
-- AIレビュー連携
-- 不明な場合は処理を止める安全設計
-- CIによる継続検証
-- 共通スキル・共通ルール化
+- **Signal Harvester / ICP** — Evidence / Provenance / replayの考え方を共有
+- **FX Intelligence / TPI** — Evidenceで受入し、評価汚染を防ぐ考え方へ接続
+- **FormPilot** — State / Gate / Recovery / External Action境界へ適用
+- **Akashic Record** — 将来の複数AI orchestration / evaluation基盤へ接続
 
-## 実装・検証の例
+## Current gaps
 
-- レビュー実行の安全性に関するテスト: **23 / 23 PASS**
-- 回帰検証: **正常系1件 + 意図的な破壊ケース37件**
-- GitHub Actionsで基盤・実行系の処理を継続検証
-- 対象RevisionとCI結果を紐付け、古い結果を現在の証拠として扱わない
-- 結果不明時に状態確認なしで再実行しない
-- 承認・実行・完了判定の責任範囲を分離
-
-## 公開コードで確認できること
-
-- [Python: AI実装結果の安全な適用](../samples/result_apply_guard.py)
-- [Python: テスト](../samples/test_result_apply_guard.py)
-
-公開版では、実プロジェクトの考え方を小さく切り出し、次の動作を読める形にしています。
-
-- Git Headが一致しなければ停止
-- 許可範囲外の変更を拒否
-- 不正な状態遷移を拒否
-- 結果不明のまま再実行しない
-- 実状態確認後にのみ適用済み・未適用を確定
-
-## 私の役割
-
-- 開発運用上の問題定義
-- 要件・状態モデル・安全境界の設計
-- Codex / Claude Codeへの詳細実装委譲
-- 実装差分の確認
-- テスト・回帰観点の追加
-- CI / GitHub実状態の確認
-- 不具合原因の切り分け
-- 修正方針と受入可否の判断
-
-## このプロジェクトで示したいこと
-
-AIエージェントを実運用する場合、モデル性能だけでなく、**状態・権限・再試行・回復・検証可能な証拠・可観測性**まで含めて設計する必要があると考えています。
+- Repository単体ではLive Codex dispatchを所有しない
+- 本格的なMulti-Agent competition / debateは未実装
+- Dynamic model routingはDesign段階
