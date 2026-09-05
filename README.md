@@ -34,36 +34,53 @@
 
 ---
 
-## 主なプロダクト
+## プロダクト全体像
 
-| プロダクト | 何をするものか | 現在の状態 |
+**「集める」「評価する」「動かす」**を別々のプロダクトで検証し、  
+その全部を**AI開発基盤**で支えています。将来は**Akashic Record**で統合する構想です。
+
+```mermaid
+flowchart TB
+
+    A["将来の統合先<br/><b>Akashic Record</b><br/>情報収集 → AI分析 → 評価 → 意思決定支援"]
+
+    subgraph NOW["現在つくっている3つの役割"]
+      direction LR
+      B["① 集める<br/><b>Signal Harvester / ICP</b><br/>Web等から情報を集め<br/>出典・時点・履歴を残す"]
+      C["② 評価する<br/><b>FX Intelligence / TPI</b><br/>仮説や予測を<br/>未使用データで検証する"]
+      D["③ 動かす<br/><b>FormPilot</b><br/>業務操作を<br/>状態管理・復旧つきで自動化する"]
+    end
+
+    E["全部を支える共通基盤<br/><b>AI開発基盤 / Review-Handoff Platform</b><br/>AIへ実装を任せる → 本当にできたか確認 → 問題があれば修正・再設計"]
+
+    B --> A
+    C --> A
+    D --> A
+
+    E -. "共通の開発ルール・検証方法" .-> B
+    E -. "共通の開発ルール・検証方法" .-> C
+    E -. "共通の開発ルール・検証方法" .-> D
+```
+
+### 一言でいうと
+
+| 役割 | プロダクト | 何をするものか |
 |---|---|---|
-| **[AI開発基盤 / Review-Handoff Platform](projects/01_ai_development_foundation.md)** | AIに開発を任せるとき、**「本当に完了したか」「安全に次へ進めるか」**を確認するための開発管理基盤 | **主要部分を実装済み / 一部継続開発** |
-| **[Signal Harvester / ICP](projects/02_signal_harvester.md)** | WebやGitHubなどから情報を集め、**出典・取得時点・履歴・変更内容を残したままAIへ渡す情報収集基盤** | **主要部分を実装済み / 観測範囲を拡張中** |
-| **[FX Intelligence / TPI](projects/03_fx_intelligence.md)** | USD/JPYの市場データを使い、**仮説を作り、未使用データを残しながら検証・評価する分析システム** | **研究・評価の主要部分を実装済み** |
-| **[FormPilot](projects/04_formpilot.md)** | Webフォームへの入力・送信を安全に自動化するための**Windows業務自動化アプリ** | **基盤部分を実装済み / 自動送信機能を段階開発中** |
-| **[Akashic Record](vision/akashic-record.md)** | 複数のAIが異なる視点で分析・反証・評価し、**意思決定を支援するAI Intelligence構想** | **設計段階** |
+| **集める** | [Signal Harvester / ICP](projects/02_signal_harvester.md) | AIが使う情報を、出典・時点・履歴つきで集める |
+| **評価する** | [FX Intelligence / TPI](projects/03_fx_intelligence.md) | 仮説や予測を、都合よく評価せず正しく検証する |
+| **動かす** | [FormPilot](projects/04_formpilot.md) | 実際の業務操作を、安全に自動化する |
+| **全部を支える** | [AI開発基盤 / RHP](projects/01_ai_development_foundation.md) | 上のプロダクトをAIで安全に開発・検証する |
+| **将来統合する** | [Akashic Record](vision/akashic-record.md) | 情報収集・分析・評価・意思決定支援を統合する |
 
----
+### 現在の実装状況
 
-## それぞれのプロダクトはどうつながっているか
-
-個別に違うものを作っているのではなく、複雑なAIシステムに必要な課題を、それぞれ別のプロダクトで検証しています。
-
-- **AI開発基盤**  
-  → AIへ仕事を任せる工程そのものを安全にする
-
-- **Signal Harvester / ICP**  
-  → AIが分析に使う情報の出典・時点・履歴を壊さない
-
-- **FX Intelligence / TPI**  
-  → 仮説や予測を、都合よく評価せず正しく検証する
-
-- **FormPilot**  
-  → AI支援で作った仕組みを、実際の業務操作へ安全につなげる
-
-- **Akashic Record**  
-  → 上記の知見を、複数AIによる分析・評価・意思決定支援へ統合する
+| プロダクト | 現在の状態 |
+|---|---|
+| **AI開発基盤 / RHP** | **主要部分を実装済み / 一部継続開発** |
+| **Signal Harvester / ICP** | **主要部分を実装済み / 観測範囲を拡張中** |
+| **FX Intelligence / TPI** | **研究・評価の主要部分を実装済み** |
+| **FormPilot** | **基盤部分を実装済み / 自動送信機能を段階開発中** |
+| **Akashic Record** | **設計段階** |
 
 ### 共通している開発の進め方
 
