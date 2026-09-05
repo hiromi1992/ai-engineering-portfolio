@@ -1,7 +1,7 @@
-# Review / Handoff Platform
+# Review-Handoff Platform
 
-このProjectのPortfolio上の説明は、**AI Development Foundation / Review-Handoff Platform**として統合しました。
+本プロジェクトの説明は、**AI開発基盤 / Review-Handoff Platform**として統合しています。
 
-→ [統合後のProject Detail](01_ai_development_foundation.md)
+→ [AI開発基盤 / Review-Handoff Platform の詳細](01_ai_development_foundation.md)
 
-旧リンク互換のため、このページを残しています。
+旧URLから参照できるよう、このページを残しています。
