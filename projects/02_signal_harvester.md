@@ -1,104 +1,85 @@
-# Signal Harvester
+# Signal Harvester / ICP
 
-## 概要
+**Status:** Core collection / history / replay / evidence — **IMPLEMENTED**  
+**Broader external observation runtime:** **PARTIAL / expanding**
 
-GitHub / Hacker News / RSS / Webなど複数の情報源から情報を取得し、**履歴・差分・取得証拠・出典情報を保持しながら再現可能に扱う情報収集基盤**です。
+## What this project is
 
-**情報源 → 取得 → 正規化 → 履歴保存 → 差分検知 → 取得証拠・出典管理 → 統一形式のSignal → 再検証**
+GitHub / Hacker News / RSS / Web等から取得した情報を、**Evidence・Provenance・History・Delta・as-ofを保ったまま後段AIへ渡す**ための情報基盤です。
 
-という流れを重視しています。
+単なるCrawlerではなく、
 
-## 全体像
+> 「何を・いつ・どこから・どの方法で取得し、その後どう変わったか」
 
-```mermaid
-flowchart LR
-    A1[GitHub] --> B[情報源・取得方法の管理]
-    A2[Hacker News] --> B
-    A3[RSS / Atom] --> B
-    A4[Web] --> B
-    B --> C[取得・本文抽出]
-    C --> D[正規化]
-    D --> E[履歴保存]
-    E --> F[差分検知]
-    F --> G[取得証拠]
-    F --> H[出典・取得履歴]
-    G --> I[統一形式のSignal]
-    H --> I
-    E --> J[保存済みデータから再検証]
-    J --> K[評価・回帰検証]
-```
+を後から再検証できることを重視しています。
 
-単なる収集ではなく、**後から「何を・いつ・どの情報源・取得方法から得たか」を再構成できること**を重視しています。
+## Capabilities demonstrated
 
-## 解きたかった問題
+| Capability | Depth / Status |
+|---|---|
+| Evidence / Provenance | ● IMPLEMENTED |
+| Temporal / as-of / History | ● IMPLEMENTED |
+| Replay / Reproducibility | ● IMPLEMENTED |
+| Delta / Change Detection | ● IMPLEMENTED |
+| Observability | ● IMPLEMENTED |
+| Evaluation | ○ IMPLEMENTED |
+| Agent / Workflow Orchestration | ○ PARTIAL |
+| Calibration / Confidence | △ PARTIAL |
 
-ニュースやWeb情報を集めるだけならCrawlerで足りますが、後段でAI分析や意思決定に使うには次の問題が残ります。
+## Problem
 
-- 同じ情報が転載・再取得され、件数だけ増える
-- 本文が更新されると、当時何を読んだか再現できない
-- AIが引用した根拠が元本文のどこにあったか追えない
-- 取得方法が変わると、情報源そのものと取得手段を混同しやすい
-- 評価時にネットワークへ再アクセスすると、当時と違うデータを使ってしまう
+後段でAI分析や意思決定に使う場合、単純な収集だけでは不足します。
 
-そこで、**取得した内容・識別子・時刻・出典・取得方法・本文Hashを分けて保存し、後から再検証できる構造**を重視しています。
+- 転載や再取得を独立したEvidenceとして数えてしまう
+- Web更新後に「当時何を読んだか」が再現できない
+- 引用が元本文のどこに存在したか追えない
+- SourceとRetrieval Methodを混同する
+- 過去評価を再実行するとLive Webの未来情報が混ざる
 
-## 代表的な設計判断
+## Key decisions
 
-### 1. 本文をHashで固定する
+### Preserve evidence, not just extracted values
+本文・Hash・取得時刻・Source・Provider等を分けて保存します。
 
-抽出本文のSHA-256を保持し、保存後に本文が変わっていないか再検証できるようにしています。
+### Replay stays network-free
+過去Runの再検証では保存済みデータを使い、Live Networkへ取り直さないことを重視します。
 
-### 2. 引用位置を本文に紐付ける
+### Source and retrieval are separate concepts
+「何の情報か」と「どう取得したか」を分離し、Provider変更でもSource identityを壊さないようにします。
 
-AIや後段処理が使った根拠を、単なる文字列として保存するだけでなく、抽出本文内の位置と結びつけます。本文Hashと組み合わせることで、引用が本当にその取得結果に存在したか確認できます。
+### Expansion is fail-closed
+外部取得の拡張では、承認・Policy・Provider条件等が揃わなければFetchしない設計を採用しています。
 
-### 3. 情報源と取得方法を分ける
+## Evidence
 
-「どの媒体・ページの情報か」と「HTTP / RSS / 別Providerなど、どう取得したか」を分離して管理します。
-
-### 4. 再検証時はネットワークへ取りに行かない
-
-保存済みデータを使った再検証では、Live Webへ再アクセスしないことを明示しています。これにより、過去時点の評価で未来の更新内容が混ざることを防ぎます。
-
-## 主な実装
-
-- GitHub / Hacker Newsの観測
+- GitHub / Hacker News observation
 - RSS 2.0 / Atom 1.0
-- 条件付きWeb取得
-- 情報源の登録・管理
-- 情報源と取得手段の分離
-- 正規化データの保存
-- 実行履歴
-- 差分優先の比較
-- 改変されない取得証拠
-- 出典・取得履歴の保存
-- Signal識別子のVersion管理
-- ネットワークへ再アクセスしない再検証
-- fixture / mockを使った回帰テスト
+- Run History / Delta
+- replay without network access
+- immutable extracted Evidence
+- Provenance snapshots
+- versioned Signal identity
+- fixture / mockによるRegression
 
-## 公開コードで確認できること
+## My responsibility
 
-- [JavaScript: 取得証拠の検証と再現](../samples/evidence_verification.js)
-- [JavaScript: テスト](../samples/evidence_verification.test.js)
+- Product requirement / data contract設計
+- Identifier / Provenance / as-of方針
+- Coding Agentへの実装委譲
+- Test / replay / regression観点
+- Diff / CI / result review
+- 仕様と実装の不一致に対する修正判断
 
-公開版では実装の本質部分を小さく切り出し、次を確認できるようにしています。
+直接のコード生成は主にCoding Agentを利用しています。
 
-- SHA-256による本文改変検知
-- 引用位置と本文の一致確認
-- 保存済み取得物が欠落している場合の明示的な未検証扱い
-- ネットワークへ再アクセスしない再検証
-- テストで正常系・改変・欠落を確認
+## Connections
 
-## 私の役割
+- **AI Development Foundation / RHP** — Evidence / Readbackで受入する思想を共有
+- **FX Intelligence / TPI** — 時点・履歴・再現可能なEvidenceをExperimentへ接続
+- **Akashic Record** — 将来のReasoningが依存するCanonical Evidence layerへ接続
 
-- 製品要件・仕様設計
-- データ形式・識別子・出典管理方針の設計
-- 実装タスクの分解
-- AI支援による実装
-- テスト・回帰・再検証観点の設計
-- 差分・CI・動作確認
-- 仕様と実装の不一致修正
+## Current gaps
 
-## このプロジェクトで示したいこと
-
-単純なCrawlerではなく、**データ処理基盤・統一形式化・時間情報・出典管理・評価可能なデータ**まで意識して設計・実装しています。
+- 全Sourceを常時観測するProduction-scale runtimeではない
+- Source coverage / scheduler healthは拡張・運用上の課題
+- Multi-Agent reasoning自体はこのProjectの責務外
