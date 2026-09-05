@@ -1,61 +1,60 @@
-# Akashic Record — Design North Star
+# Akashic Record — 長期構想
 
-**Status:** **DESIGN**
+**現在の状態:** **設計段階**
 
-Akashic Recordは、これまでの個人開発で扱ってきた **Evidence / Evaluation / AI Delivery / Recovery / Experiment** を、より複雑なAI Intelligenceへ統合する長期的なDesign Explorationです。
+Akashic Recordは、これまでの個人開発で扱ってきた**根拠管理・評価・AI開発制御・復旧・実験設計**を、より複雑なAI Intelligenceへ統合する長期的な構想です。
 
-## High-level concept
+## 目指している全体像
 
 ```text
-Observation / Evidence
-        ↓
-Independent Analysis
-        ↓
-Critique / Falsification
-        ↓
-Evaluation / Selection
-        ↓
-Decision Opportunity / Abstain
-        ↓
-Outcome / Learning
+情報収集・根拠
+      ↓
+複数AIによる独立分析
+      ↓
+批評・反証
+      ↓
+評価・選択
+      ↓
+判断 / 保留
+      ↓
+結果・学習
 ```
 
-## Capabilities already explored in other projects
+## 既存プロダクトで既に扱っている要素
 
-- Evidence / Provenance / as-of
-- Evaluation / Acceptance
-- Independent Review
-- Experiment / Holdout
-- State / Gate / Authority
-- Recovery / Retry
-- Observability
-- Decision / Abstainの基礎
+- 根拠・出典・時点管理
+- 評価・受入判断
+- 独立レビュー
+- 実験・未使用データ管理
+- 状態・進行条件・権限管理
+- 失敗時の復旧・再試行
+- 可観測性
+- 判断を保留し、人へ引き継ぐ考え方
 
-## Capabilities not yet fully covered
+## まだ十分にカバーできていない要素
 
 ここは未実装・未解決として明示しています。
 
-- Multiple Brain × Multiple Lens
-- Competing hypotheses
-- Multi-Agent cross-critique / debate
-- Dynamic Agent / Model Routing
-- Cost / Latency-aware routing
-- Judge Ensemble / advanced selection
-- Calibration / confidence / uncertainty
-- Multi-Agent synthesis
+- 複数AIが別々に考え、異なる仮説を出す仕組み
+- AI同士が互いの結果を批評・反証する仕組み
+- 問題に応じて使うAI / Modelを自動で切り替える仕組み
+- 品質・速度・コストを見ながらAIを選ぶ仕組み
+- 複数の評価者による選択
+- 信頼度・不確実性の高度な評価
+- 複数AIの結果を最終的に統合する仕組み
 
-## How existing projects connect
+## 既存プロダクトとのつながり
 
-**AI Development Foundation / RHP**  
-AIを安全に委譲・検証・受入する。
+**AI開発基盤 / RHP**  
+AIへ仕事を安全に委譲・検証・受入する。
 
 **Signal Harvester / ICP**  
-Reasoningへ渡すEvidenceの出典・時点・履歴を保つ。
+AIが分析に使う情報の出典・時点・履歴を保つ。
 
 **FX Intelligence / TPI**  
-Hypothesis・Evaluation・Holdout・Abstainを検証する。
+仮説・評価・未使用データ・保留判断を検証する。
 
 **FormPilot**  
-State / Recovery / External Action境界を実世界Softwareへ適用する。
+状態管理・復旧・外部操作境界を実世界Softwareへ適用する。
 
-Akashic Recordは、これらを「完成済み」と見せるためのラベルではなく、**現在のCoverageと未解決領域を明確にするためのNorth Star**として公開Portfolioに置いています。
+Akashic Recordは「完成済み」と見せるためのラベルではなく、**現在の強みと未解決領域をつなぐ長期的な設計目標**として公開Portfolioに置いています。
