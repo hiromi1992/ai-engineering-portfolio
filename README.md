@@ -125,6 +125,12 @@ Evidenceを土台に、複数AIによる分析・反証・評価からDecision O
 
 → [Akashic Record](vision/akashic-record.md)
 
+## Selected Failure / Evaluation Case Studies
+
+- [Success response, but no real change](case-studies/01_readback_failure.md) — AIの成功申告ではなくReadbackで受入する
+- [Green CI was not enough](case-studies/02_green_ci_independent_review.md) — CI PASS後もIndependent Reviewで設計へ戻す
+- [Do not improve an experiment after seeing the answer](case-studies/03_experiment_contamination.md) — Holdoutと実験汚染を分離する
+
 ## Selected Implementation Evidence
 
 主要Project本体はprivate repositoryで継続開発しています。公開Portfolioでは、考え方を検証可能にするため、依存関係を減らした実装サンプルとTestを置いています。
