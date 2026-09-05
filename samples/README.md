@@ -1,15 +1,30 @@
 # 公開コードサンプル
 
-主要プロジェクトは非公開リポジトリで開発していますが、採用選考で実装内容を確認できるよう、実際の実装から本質部分を抜き出した公開用サンプルを置いています。
+主要Project本体はprivate repositoryで継続開発しています。
 
-公開にあたり、製品固有の識別子・周辺依存・機密になり得る設定は削除または単純化しています。設計上の考え方と主要な制御ロジックは元実装に基づいています。
+ここでは採用選考で設計・制御ロジックを確認できるよう、実Projectの考え方を依存関係の少ない形へ切り出したサンプルを公開しています。
 
-| サンプル | 言語 | 見てほしい点 |
+> **Implementation disclosure**  
+> コード生成・直接実装は主にCodex / Claude等のCoding Agentを利用しています。  
+> 本人はProblem / Requirement / Architecture / Acceptance Criteria / Test観点 / Review / Acceptanceを担当しています。
+
+| サンプル | 実装環境 | 見てほしい点 |
 |---|---|---|
-| [AI実装結果の安全な適用](result_apply_guard.py) | Python | 状態遷移、対象Headの一致確認、変更範囲制限、結果不明時の再実行防止 |
-| [取得証拠の検証と再現](evidence_verification.js) | JavaScript | SHA-256、出典位置の固定、改ざん検知、ネットワーク再取得なしの再検証 |
-| [自動処理の再試行ポリシー](automation_retry_policy.ts) | TypeScript | 型による状態表現、失敗理由、再試行可否、安全側の制御 |
+| [AI実装結果の安全な適用](result_apply_guard.py) | Python | State、Head一致、変更範囲、OUTCOME_UNKNOWN、Blind retry防止 |
+| [取得証拠の検証と再現](evidence_verification.js) | JavaScript | SHA-256、Evidence位置、改変検知、network-free replay |
+| [自動処理の再試行ポリシー](automation_retry_policy.ts) | TypeScript | Failure classification、retry safety、fail-closed decision |
 
-## なぜこの3本か
+## Why these samples
 
-狙っているApplied AI / AI Agent / Data基盤 / FDE系の仕事では、モデル呼び出しそのものよりも、**状態管理・データ品質・再現性・失敗時の安全性・本番運用**が重要になると考えているためです。
+Portfolioで示したいのは言語知識そのものではなく、AIやAutomationを本番に近づけるときに必要になる、
+
+- State
+- Evidence
+- Evaluation
+- Recovery
+- Reproducibility
+- Safe failure
+
+の考え方です。
+
+製品固有の識別子・設定・周辺依存は公開用に削除または単純化しています。
