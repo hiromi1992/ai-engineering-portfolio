@@ -2,7 +2,7 @@
 
 新規事業・開発PMの経験を背景に、事業や業務の課題を整理し、**AIを活用したシステムの要件定義・設計・検証・受入判断まで**を個人開発で実践しています。
 
-コード生成・直接実装には主にCodex / ClaudeなどのCoding Agentを活用し、私は以下を担当しています。
+コード生成・直接実装には主にCodex / ClaudeなどのCoding Agent（AI実装支援）を活用し、私は以下を担当しています。
 
 **課題整理 → 要件定義 → システム設計 → 実装指示 → 検証設計 → レビュー → 受入 / 再設計**
 
@@ -40,10 +40,10 @@ flowchart TB
 
 | 役割 | プロダクト | 概要 | 現在の状態 |
 |---|---|---|---|
-| **情報収集** | [Signal Harvester / ICP](projects/02_signal_harvester.md) | Web・GitHub等から情報を収集し、出典・取得時点・履歴・差分を保持する | **主要機能を実装済み / 観測範囲を拡張中** |
-| **評価** | [FX Intelligence / TPI](projects/03_fx_intelligence.md) | USD/JPYデータを用い、仮説・予測を未使用データを残しながら検証する | **研究・評価基盤を実装済み** |
+| **情報収集** | [Signal Harvester / Signal Intelligence Corpus（ICP）](projects/02_signal_harvester.md) | Web・GitHub等から情報を収集し、出典・取得時点・履歴・差分を保持する | **主要機能を実装済み / 観測範囲を拡張中** |
+| **評価** | [FX Intelligence / Temporal Pattern Intelligence（TPI）](projects/03_fx_intelligence.md) | USD/JPYデータを用い、仮説・予測を未使用データを残しながら検証する | **研究・評価基盤を実装済み** |
 | **業務適用** | [FormPilot](projects/04_formpilot.md) | Webフォーム業務の自動化に向け、状態管理・復旧・安全な実行境界を設計する | **基盤・観測機能を実装済み / 自動実行機能を開発中** |
-| **共通基盤** | [AI開発基盤 / RHP](projects/01_ai_development_foundation.md) | Coding Agentへ実装を委譲し、実状態を確認して受入・再設計する開発基盤 | **主要機能を実装済み / 自動実行範囲は一部制限** |
+| **共通基盤** | [AI開発基盤 / Review-Handoff Platform（RHP）](projects/01_ai_development_foundation.md) | Coding Agentへ実装を委譲し、実状態を確認して受入・再設計する開発基盤 | **主要機能を実装済み / 自動実行範囲は一部制限** |
 | **長期構想** | [Akashic Record](vision/akashic-record.md) | 各プロダクトの知見を、複数AIによる分析・評価・意思決定支援へ統合する | **設計段階** |
 
 ---
