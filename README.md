@@ -1,96 +1,130 @@
-# AI Product / FDE Portfolio
+# AIプロダクト / FDE ポートフォリオ
 
-Business / Productの課題をAIシステムの要件へ変換し、Coding Agentを実装手段として、**設計・検証・受入・再設計まで進める**個人開発Portfolioです。
+事業や業務の課題を整理し、**AIを使ったシステムの要件・設計・検証方法まで落とし込み、完成可否を判断する**形で個人開発を進めています。
 
-> **My responsibility**  
-> Problem Definition → Requirements → Architecture → Task Decomposition → Evaluation → Review → Acceptance / Redesign
->
-> **Implementation**  
-> コード生成・直接実装は主にCodex / Claude等のCoding Agentを利用しています。
+コード生成・直接実装は主にCodex / ClaudeなどのCoding Agentを利用し、本人は以下を担当しています。
+
+**課題整理 → 要件定義 → システム設計 → 実装指示 → 検証設計 → レビュー → 受入 / 再設計**
+
+---
 
 ## 30秒で分かる現在地
 
-### Strong
+### 現在かなりカバーできている領域
 
-| Capability | 一言でいうと |
+| 能力 | 一言でいうと |
 |---|---|
-| **Problem / Requirement** | 曖昧な課題を、実装可能な要件・受入条件へ落とす |
-| **AI Delivery Control** | AIへの委譲からReview・検証・受入までを制御する |
-| **State / Gate / Authority** | 誰が・いつ・何を決められるかを明確にする |
-| **Evaluation** | Test・Review・Readback等で結果を検証する |
-| **Evidence / Provenance** | 判断根拠を出典・時点・履歴とともに残す |
-| **Recovery** | 中断・失敗・結果不明から安全に再開する |
-| **Temporal / as-of** | 「いつ時点の情報か」を壊さず扱う |
-| **Experiment / Holdout** | 仮説・評価条件を固定し、結果観測後の汚染を防ぐ |
+| **課題整理・要件定義** | 曖昧な事業・業務課題を、実装可能な要件と受入条件まで整理する |
+| **AI開発の進行管理** | AIへの実装委譲からレビュー・検証・受入までを一つの工程として管理する |
+| **状態・権限・進行条件の設計** | 誰が・いつ・何を決められるかを明確にし、誤った進行を防ぐ |
+| **評価・受入判断** | テスト、レビュー、実際のシステム状態を確認して結果を判断する |
+| **根拠・出典管理** | 判断に使った情報を、出典・取得時点・履歴とともに残す |
+| **失敗時の復旧設計** | 中断・失敗・結果不明が起きても、安全に再開・修正できるようにする |
+| **時点・履歴管理** | 「いつ時点の情報か」を保持し、過去と現在を混同しないようにする |
+| **実験・検証設計** | 仮説・評価条件・未使用データを分け、結果を見た後の都合の良い変更を防ぐ |
 
-### Partial / growing
+### 一部カバー / 今後さらに伸ばしたい領域
 
-| Capability | 現在地 |
+| 能力 | 現在地 |
 |---|---|
-| **Agent Orchestration** | Delegation / Handoff / Workflow制御は実装済み。本格的なMulti-Agent競合・動的Routingは未完成 |
-| **External Action Safety** | State / Queue / Recovery境界は実装済み。Real external actionまでの実装は継続中 |
+| **複数AIの連携・役割分担** | AIへの役割分担や引継ぎは実装済み。本格的な複数AI同士の競合・動的な振り分けは未完成 |
+| **外部操作の安全設計** | 状態管理・再試行・復旧までは実装済み。実際の外部送信まで含む仕組みは継続開発中 |
 
-→ **[Capability × Product × Implementation Status の詳細](capabilities/README.md)**
+→ **[各能力をどのプロダクトで、どこまで実装しているか](capabilities/README.md)**
 
-## Products
+---
 
-| Product | 何を検証しているか | Status |
+## 主なプロダクト
+
+| プロダクト | 何をするものか | 現在の状態 |
 |---|---|---|
-| **[AI Development Foundation / RHP](projects/01_ai_development_foundation.md)** | AIに仕事を任せる工程そのもの。Gate / Readback / Review / Recovery | **IMPLEMENTED / PARTIAL** |
-| **[Signal Harvester / ICP](projects/02_signal_harvester.md)** | AIへ渡すEvidenceの出典・時点・履歴・差分を壊さない | **IMPLEMENTED / PARTIAL** |
-| **[FX Intelligence / TPI](projects/03_fx_intelligence.md)** | Hypothesis / Backtest / Holdout / Evaluationを厳密に扱う | **IMPLEMENTED** |
-| **[FormPilot](projects/04_formpilot.md)** | State / Queue / Recovery / E2Eを実世界Softwareへ適用する | **IMPLEMENTED / PARTIAL** |
-| **[Akashic Record](vision/akashic-record.md)** | 上記をMulti-Agent Decision Intelligenceへ統合するNorth Star | **DESIGN** |
+| **[AI開発基盤 / Review-Handoff Platform](projects/01_ai_development_foundation.md)** | AIに開発を任せるとき、**「本当に完了したか」「安全に次へ進めるか」**を確認するための開発管理基盤 | **主要部分を実装済み / 一部継続開発** |
+| **[Signal Harvester / ICP](projects/02_signal_harvester.md)** | WebやGitHubなどから情報を集め、**出典・取得時点・履歴・変更内容を残したままAIへ渡す情報収集基盤** | **主要部分を実装済み / 観測範囲を拡張中** |
+| **[FX Intelligence / TPI](projects/03_fx_intelligence.md)** | USD/JPYの市場データを使い、**仮説を作り、未使用データを残しながら検証・評価する分析システム** | **研究・評価の主要部分を実装済み** |
+| **[FormPilot](projects/04_formpilot.md)** | Webフォームへの入力・送信を安全に自動化するための**Windows業務自動化アプリ** | **基盤部分を実装済み / 自動送信機能を段階開発中** |
+| **[Akashic Record](vision/akashic-record.md)** | 複数のAIが異なる視点で分析・反証・評価し、**意思決定を支援するAI Intelligence構想** | **設計段階** |
 
-**Status:** IMPLEMENTED = 実装・検証済み / PARTIAL = 一部実装・限定条件で検証 / DESIGN = 設計段階
+---
 
-## What is not yet fully covered
+## それぞれのプロダクトはどうつながっているか
 
-次に深めたいのは **Multi-Agent Intelligence × Advanced Evaluation** です。
+個別に違うものを作っているのではなく、複雑なAIシステムに必要な課題を、それぞれ別のプロダクトで検証しています。
 
-- Multiple Brain × Multiple Lens
-- Competing hypotheses / Cross-Critique / Debate
-- Dynamic Agent / Model Routing
-- Cost / Latency-aware Routing
-- Judge Ensemble / Advanced Selection
-- Calibration / Confidence / Uncertainty
+- **AI開発基盤**  
+  → AIへ仕事を任せる工程そのものを安全にする
 
-未実装領域も含めて明示し、**「何ができるか」だけでなく「何がまだできないか」も分かるPortfolio**にしています。
+- **Signal Harvester / ICP**  
+  → AIが分析に使う情報の出典・時点・履歴を壊さない
 
-## How the projects connect
+- **FX Intelligence / TPI**  
+  → 仮説や予測を、都合よく評価せず正しく検証する
+
+- **FormPilot**  
+  → AI支援で作った仕組みを、実際の業務操作へ安全につなげる
+
+- **Akashic Record**  
+  → 上記の知見を、複数AIによる分析・評価・意思決定支援へ統合する
+
+### 共通している開発の進め方
 
 ```text
-Failure
-  ↓
-Finding
-  ↓
-Design Principle
-  ↓
-Gate / Rule / Evaluation
-  ↓
-Shared Foundation
-  ↓
-Other Productsへ再適用
+失敗・不具合
+   ↓
+原因を特定
+   ↓
+設計ルールに変換
+   ↓
+共通の確認・防止ルールへ追加
+   ↓
+他のプロダクトにも再利用
 ```
 
-各Productで見つかった失敗を単発修正で終わらせず、共通Rule・Gate・Evaluation・Regressionへ還流します。
+その場の修正だけで終わらせず、別のプロダクトでも同じ失敗を起こさない形へ戻すことを重視しています。
 
-### Examples
+---
 
-- **[Success response, but no real change](case-studies/01_readback_failure.md)** — AIの成功申告ではなくReadbackで受入する
-- **[Green CI was not enough](case-studies/02_green_ci_independent_review.md)** — CI PASS後もIndependent Reviewで設計へ戻す
-- **[Do not improve an experiment after seeing the answer](case-studies/03_experiment_contamination.md)** — Holdoutと実験汚染を分離する
+## まだ十分にカバーできていない領域
 
-## Selected Implementation Evidence
+次に深めたいのは、**複数AIの協調・競合と、高度なAI評価**です。
 
-主要Project本体はprivate repositoryで継続開発しています。公開側では、設計・制御ロジックを確認できる小さな実装サンプルとTestを置いています。
+- 複数AIが独立して考え、異なる仮説を出す仕組み
+- AI同士が互いの結果を批評・反証する仕組み
+- 問題に応じて使うAIや役割を自動で切り替える仕組み
+- 品質・速度・コストを見ながらAIを選ぶ仕組み
+- 複数の評価結果を組み合わせて最終判断する仕組み
+- AIの回答にどの程度自信を持てるかを扱う仕組み
 
-- [Result Apply Guard — Python](samples/result_apply_guard.py)
-- [Evidence Verification — JavaScript](samples/evidence_verification.js)
-- [Automation Retry Policy — TypeScript](samples/automation_retry_policy.ts)
+未実装領域も隠さず、**現在できることと、まだできないことの両方が分かるPortfolio**にしています。
 
-コード生成・直接実装はCoding Agentを利用し、本人はRequirement / Architecture / Acceptance Criteria / Test観点 / Review / Acceptanceを担当しています。
+---
 
-**Implementation environment:** Python / TypeScript / JavaScript / Node.js / Electron / React / SQLite / PostgreSQL / Git / GitHub / CI / Unit Test / E2E / Regression Test
+## 代表的な失敗・改善事例
+
+- **[AIが成功と返したが、実際には変更されていなかった](case-studies/01_readback_failure.md)**  
+  → AIの自己申告ではなく、実際のファイル状態を確認して受入する仕組みへ変更
+
+- **[自動テストがすべて通っても、レビューで重大な問題が見つかった](case-studies/02_green_ci_independent_review.md)**  
+  → テスト結果だけを正解とせず、独立レビューと再設計を開発工程へ追加
+
+- **[結果を見た後で条件を変えると、評価が都合よく見えてしまう](case-studies/03_experiment_contamination.md)**  
+  → 未使用データと評価条件を先に固定し、実験結果の汚染を防止
+
+---
+
+## 公開している実装サンプル
+
+主要プロダクト本体は非公開Repositoryで継続開発しています。
+
+公開側では、設計や制御方法を確認できるよう、依存関係を減らした小さな実装サンプルとテストを置いています。
+
+- [AI実装結果を安全に適用する仕組み — Python](samples/result_apply_guard.py)
+- [取得した情報の根拠を再検証する仕組み — JavaScript](samples/evidence_verification.js)
+- [自動処理を再試行してよいか判断する仕組み — TypeScript](samples/automation_retry_policy.ts)
+
+コード生成・直接実装はCoding Agentを利用し、本人は**要件・設計・テスト観点・レビュー・受入判断**を担当しています。
+
+### 個人開発で利用している実装環境
+
+Python / TypeScript / JavaScript / Node.js / Electron / React / SQLite / PostgreSQL / Git / GitHub / CI / Unit Test / E2E / Regression Test
 
 ※上記は個人開発で利用している実装環境であり、手書き実装スキル一覧を意味しません。
