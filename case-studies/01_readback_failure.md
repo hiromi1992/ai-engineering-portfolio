@@ -1,32 +1,32 @@
-# Case Study — Success response, but no real change
+# 失敗事例 — AIは成功と返したが、実際には変更されていなかった
 
-**Theme:** Readback / Acceptance / AI Delivery Control
+**テーマ:** 実状態確認 / 受入判断 / AI開発制御
 
-## Situation
+## 何が起きたか
 
-Coding Agent側の実行結果が成功として返った一方、期待していた実ファイル変更が確認できないケースがありました。
+Coding Agent側では実行成功として返ってきた一方、期待していた実ファイル変更が確認できないケースがありました。
 
-## Risk
+## 何が危険か
 
-実行側のexit statusや自己申告だけで完了扱いすると、実際には変更されていない状態を成功として次工程へ進めてしまいます。
+実行側のexit statusやAIの自己申告だけで完了扱いすると、実際には変更されていない状態を成功として次工程へ進めてしまいます。
 
-## Decision
+## どう変えたか
 
-「Agentが成功と言ったこと」と「Repositoryの実状態」を分離。
+「AIが成功と言ったこと」と「Repositoryの実状態」を分離しました。
 
-完了判定にはReadbackを要求し、対象ファイル・内容・Hash等の実状態が期待と一致するまで受入しない方針へ変更しました。
+完了判定には実状態確認（Readback）を要求し、対象ファイル・内容・Hash等が期待と一致するまで受入しない方針へ変更しました。
 
-## Learning transferred
+## 他プロダクトへどう還流したか
 
-このFindingを単発の再実行で終わらせず、
+この問題を単発の再実行で終わらせず、
 
-- External state is authority
-- OUTCOME_UNKNOWNを独立状態として扱う
-- Blind retryを禁止する
-- Acceptance前にReadbackする
+- 外部の実状態を最終根拠にする
+- 「結果不明」を独立した状態として扱う
+- 結果不明のまま再実行しない
+- 受入前に実状態を確認する
 
-という共通原則へ変換し、AI Development Foundation / RHPのGateへ反映しています。
+という共通原則へ変換し、AI開発基盤 / RHPの確認ルールへ反映しました。
 
-## Capability link
+## 関連する能力
 
-**AI Delivery Control → Evidence / Readback → Evaluation → Acceptance**
+**AI開発の進行管理 → 実状態確認 → 評価 → 受入判断**
