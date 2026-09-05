@@ -1,34 +1,34 @@
-# Case Study — Green CI was not enough
+# 失敗事例 — 自動テストがすべて通っても、重大な問題が残っていた
 
-**Theme:** Independent Review / Adversarial Evaluation / Redesign
+**テーマ:** 独立レビュー / 反証 / 再設計
 
-## Situation
+## 何が起きたか
 
-Automated checksがGreenになった後でも、Independent ReviewによってMaterial Findingが複数検出されたケースがありました。
+自動テストやCIがすべてPASSした後でも、独立レビューによって重大な問題が複数見つかったケースがありました。
 
-## Risk
+## 何が危険か
 
-CI PASSを「設計が正しい」証拠として扱うと、Testが持っていない観点や前提ミスを見逃します。
+CI PASSを「設計そのものが正しい」証拠として扱うと、テストが持っていない観点や前提ミスを見逃します。
 
-## Decision
+## どう変えたか
 
-Green CIを最終Authorityにせず、
+CIを最終判断にせず、
 
-1. Automated Test
-2. Independent Review
-3. Finding analysis
-4. Redesign
-5. Regression / adversarial checks
-6. Fresh review
+1. 自動テスト
+2. 独立レビュー
+3. 問題原因の分析
+4. 再設計
+5. 回帰・異常系検証
+6. 新しい条件で再レビュー
 
-というLoopへ戻しました。
+という流れへ戻しました。
 
-## Learning transferred
+## 他プロダクトへどう還流したか
 
-「Testが通ったか」ではなく、**どのFailure ModeをTestできているか**を見る方針へ変更。
+「テストが通ったか」だけでなく、**どの失敗パターンをテストできているか**を見る方針へ変更。
 
-Findingを次回以降のGate / Rule / Regressionへ還流する設計を、複数Projectで共通化しています。
+見つかった問題を、次回以降の確認ルール・回帰テストへ戻す考え方を複数プロダクトで共通化しています。
 
-## Capability link
+## 関連する能力
 
-**Evaluation → Independent Review → Falsification → Regression → Learning Loop**
+**評価 → 独立レビュー → 反証 → 回帰テスト → 学習**
