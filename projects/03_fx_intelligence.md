@@ -1,81 +1,79 @@
-# FX Intelligence / Temporal Pattern Intelligence
+# FX Intelligence / TPI
 
-**Status:** Research / Evaluation Core v0.3.2 — **IMPLEMENTED**
+**現在の状態:** 研究・評価の主要部分 v0.3.2 — **実装済み**
 
-## What this project is
+## 何をするものか
 
-USD/JPYの市場データとSignalを使い、HypothesisをBacktest・Evaluationする研究 / 意思決定支援システムです。
+USD/JPYの市場データを使い、**仮説を作り、未使用データを残しながら検証・評価する分析システム**です。
 
-このProjectの中心は「予測を当てること」だけではなく、**結果を見た後に条件を変えて評価を歪めないこと**です。
+このプロジェクトの中心は「予測を当てること」だけではなく、**結果を見た後に条件を都合よく変えて評価を歪めないこと**です。
 
-Trading Strategy、Position sizing、Broker Order、Execution authorityはScope外です。
+売買注文・ポジション管理・Brokerへの発注機能は持たせていません。
 
-## Capabilities demonstrated
+## このプロダクトで扱っている能力
 
-| Capability | Depth / Status |
+| 能力 | 現在地 |
 |---|---|
-| Problem / Requirement | ● IMPLEMENTED |
-| Experiment Design | ● IMPLEMENTED |
-| Backtest / Evaluation | ● IMPLEMENTED |
-| Holdout | ● IMPLEMENTED |
-| Contamination Prevention | ● IMPLEMENTED |
-| Evidence / Reproducibility | ● IMPLEMENTED |
-| Decision / Abstain | ● IMPLEMENTED |
-| Calibration / Confidence | ○ PARTIAL |
-| Multi-Agent Reasoning | △ PARTIAL |
+| 課題・仮説設定 | ● 実装済み |
+| 実験設計 | ● 実装済み |
+| バックテスト・評価 | ● 実装済み |
+| 未使用データ（Holdout）管理 | ● 実装済み |
+| 実験汚染の防止 | ● 実装済み |
+| 再現性・根拠管理 | ● 実装済み |
+| 判断・保留 | ● 実装済み |
+| 信頼度・不確実性評価 | ○ 一部実装 |
+| 複数AIによる推論 | △ 一部実装 |
 
-## Problem
+## 解きたかった問題
 
-分析では、結果を見た後で条件や評価基準を変更すると、見かけ上の成績を簡単に改善できます。
+分析では、結果を見た後で条件や評価基準を変更すると、見かけ上の成績を簡単に良くできます。
 
 そこで、
 
-- Discovery
-- Validation
-- Holdout
-- Evaluation criteria
-- Experiment state
+- 仮説を作る期間
+- 検証する期間
+- 最後まで未使用にするデータ
+- 評価基準
+- どこまで結果を観測済みか
 
-を分け、どこまで観測済みかを明示的に管理する方向で設計しています。
+を分けて管理しています。
 
-## Key design decisions
+## 主な設計判断
 
-### 1. Holdoutを評価の最後まで開かない
-未知データを未知のまま残し、最終確認用のEvidenceとして扱います。
+### 1. 未使用データを最後まで残す
+最終確認用のデータは途中で見ず、未知のまま保持します。
 
-### 2. 結果観測後の条件変更を「改善」ではなく汚染として扱う
-観測済み結果に合わせた変更を、そのまま同じExperimentの正当な結果として扱いません。
+### 2. 結果を見た後の条件変更を「改善」と扱わない
+観測済みの結果に合わせて条件を変えた場合は、同じ実験の正当な続きではなく、評価汚染の可能性として扱います。
 
-### 3. ResearchとExecutionを分離する
-このRepositoryにはBroker OrderやExecution authorityを持たせません。
+### 3. 研究と実売買を分離する
+このRepositoryにはBrokerへの注文や実売買の権限を持たせていません。
 
-### 4. Replay / Reproducibilityを重視する
-評価条件と使用データを固定し、後から同じ条件を再確認できる構造を重視しています。
+### 4. 同じ条件で後から再確認できるようにする
+使用データ・評価条件・実験状態を固定し、後から同じ条件で再検証できることを重視しています。
 
-## My responsibility
+## 本人の担当
 
-- Research question / Hypothesisの定義
-- Evaluation設計
-- Dataset split / Holdout方針
-- Acceptance / Rejection条件
+- 研究テーマ・仮説の定義
+- 評価方法の設計
+- Dataset分割・未使用データ方針
+- 受入 / 却下条件
 - Coding Agentへの実装指示
-- Test / Result review
-- 汚染リスクの判定
+- テスト・結果レビュー
+- 実験汚染リスクの判断
 - 続行・修正・再設計の判断
 
 直接のコード生成は主にCoding Agentを利用しています。
 
-## How this connects to other projects
+## 他プロダクトとのつながり
 
-**Signal Harvester / ICP** で扱うEvidence / Temporal / as-ofの考え方を、Experimentデータと評価時点の管理へ応用。
+- **Signal Harvester / ICP** — 根拠・時点・履歴管理の考え方を実験データ管理へ応用
+- **AI開発基盤 / RHP** — 自己申告ではなく検証可能な根拠で受け入れる考え方を適用
+- **Akashic Record** — 未使用データ・評価汚染防止・保留判断の考え方を将来のAI評価へ接続
 
-**AI Development Foundation / RHP** の「自己申告ではなくEvidenceで受入する」考え方を、Backtest / Evaluationにも適用。
+## まだできていないこと
 
-このProjectで得たHoldout・汚染防止・Abstainの考え方は、将来の **Akashic Record** におけるAI Evaluation / Selectionへ接続します。
-
-## Current gaps
-
-- Production-scale LLM Evalではない
-- Judge Ensemble / Learned Judgeは未実装
-- Confidence calibrationは限定的
-- Multi-Agent competing hypothesesは探索段階
+- 本番規模のLLM評価ではない
+- 複数評価者によるJudge Ensembleは未実装
+- 信頼度の高度な補正は限定的
+- 複数AIが別々に仮説を出して競合する仕組みは探索段階
