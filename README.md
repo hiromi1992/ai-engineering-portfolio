@@ -1,123 +1,142 @@
-# AI Engineering Portfolio
+# AI Product / FDE Portfolio
 
-Claude Code / Codex などのAI開発支援を使いながら、**問題設定・要件整理・設計方針・検証・受入まで自分で責任を持つ**形で開発しています。
+Business / Productの課題をAIシステムの要件へ変換し、Coding Agentを実装手段として、**設計・検証・受入・再設計まで進める**個人開発Portfolioです。
 
-主な関心領域は、AIエージェント、情報収集・データ基盤、検索・知識基盤、評価・可観測性、本番運用、意思決定支援です。
+> **My responsibility**  
+> Problem Definition → Requirements → Architecture → Task Decomposition → Evaluation → Review → Acceptance / Redesign  
+>
+> **Implementation**  
+> コード生成・直接実装は主にCodex / Claude等のCoding Agentを利用しています。
 
-## まず見てほしい2つ
+## 30秒で分かる現在地
 
-採用選考で短時間に確認いただく場合は、まず以下の2つを見ると開発スタイルが伝わりやすいです。
+### 強くカバーできている領域
 
-### 1. AI Development Foundation / Review・Handoff基盤
+| Capability | 一言でいうと | Coverage |
+|---|---|---|
+| **Problem / Requirement** | 曖昧な課題を実装可能な要件・受入条件へ落とす | **STRONG** |
+| **AI Delivery Control** | AIへの委譲からReview・検証・受入までを制御する | **STRONG** |
+| **State / Gate / Authority** | 誰が・いつ・何を決められるかを明確にする | **STRONG** |
+| **Evaluation** | Test・Review・Readback等で結果を検証する | **STRONG** |
+| **Evidence / Provenance** | 判断根拠を出典・時点・履歴とともに残す | **STRONG** |
+| **Recovery** | 中断・失敗・結果不明から安全に再開する | **STRONG** |
+| **Temporal / as-of** | 「いつ時点の情報か」を壊さず扱う | **STRONG** |
+| **Experiment** | 仮説・Holdout・評価条件を固定して検証する | **STRONG** |
+| **External Action Safety** | 外部操作を実行前後の確認付きで扱う | **STRONG** |
+| **Observability** | 状態・失敗理由・履歴を後から追跡可能にする | **STRONG** |
 
-AIの実装結果を自己申告だけで完了扱いせず、**対象Git Head・変更許可範囲・実際の適用結果を照合し、結果不明時には無闇に再実行しない**仕組みを扱っています。
+### まだ十分にカバーできていない領域
 
-- [プロジェクト詳細](projects/01_ai_development_foundation.md)
-- [Python公開コード: AI実装結果の安全な適用](samples/result_apply_guard.py)
-- [Pythonテスト](samples/test_result_apply_guard.py)
+- **Multi-Agent Competition / Multiple Brain × Lens**
+- **Cross-Critique / Debate / Synthesis**
+- **Dynamic Agent / Model Routing**
+- **Cost / Latency-aware Routing**
+- **Judge Ensemble / Advanced Selection**
+- **Calibration / Confidence / Uncertainty**
 
-### 2. Signal Harvester
+現在のAgent Delegation・Independent Review・Evaluationを土台に、次に深めたい領域です。
 
-複数の情報源から取得した情報を、**履歴・差分・取得証拠・出典情報と一緒に保存し、後から再検証できるデータ基盤**として設計しています。
+## Capability × Product × Status
 
-- [プロジェクト詳細](projects/02_signal_harvester.md)
-- [JavaScript公開コード: 取得証拠の検証と再現](samples/evidence_verification.js)
-- [JavaScriptテスト](samples/evidence_verification.test.js)
+**Status:** IMPLEMENTED = 実装・検証済み / PARTIAL = 一部実装 / DESIGN = 設計段階
 
-## 全体像
+| Capability | AI Dev Foundation / RHP | Signal Harvester / ICP | FX Intelligence / TPI | FormPilot | Akashic |
+|---|---|---|---|---|---|
+| Problem → Requirement | ● IMPLEMENTED | ● IMPLEMENTED | ● IMPLEMENTED | ● IMPLEMENTED | ● DESIGN |
+| AI Delivery Control | ● IMPLEMENTED | ○ IMPLEMENTED | ○ IMPLEMENTED | ○ IMPLEMENTED | ● DESIGN |
+| Agent Orchestration | ● PARTIAL | ○ PARTIAL | ○ PARTIAL | ○ PARTIAL | ● DESIGN |
+| State / Gate / Authority | ● IMPLEMENTED | ○ IMPLEMENTED | ○ IMPLEMENTED | ● IMPLEMENTED | ● DESIGN |
+| Evaluation / Acceptance | ● IMPLEMENTED | ○ IMPLEMENTED | ● IMPLEMENTED | ● IMPLEMENTED | ● DESIGN |
+| Evidence / Provenance | ● IMPLEMENTED | ● IMPLEMENTED | ● IMPLEMENTED | ○ IMPLEMENTED | ● DESIGN |
+| Temporal / as-of / History | ○ IMPLEMENTED | ● IMPLEMENTED | ● IMPLEMENTED | ○ IMPLEMENTED | ● DESIGN |
+| Experiment / Holdout | ○ PARTIAL | ○ PARTIAL | ● IMPLEMENTED | ○ PARTIAL | ● DESIGN |
+| Recovery / Retry | ● IMPLEMENTED | ○ IMPLEMENTED | ○ IMPLEMENTED | ● IMPLEMENTED | ○ DESIGN |
+| External Action Safety | ○ PARTIAL | — | — | ● PARTIAL | ○ DESIGN |
+| Observability | ● IMPLEMENTED | ● IMPLEMENTED | ○ IMPLEMENTED | ● IMPLEMENTED | ○ DESIGN |
+| Calibration / Confidence | △ PARTIAL | △ PARTIAL | ○ PARTIAL | — | ● DESIGN |
+| Multi-Agent Competition | △ PARTIAL | — | △ PARTIAL | — | ● DESIGN |
+| Dynamic Routing | △ DESIGN | — | — | — | ● DESIGN |
+| Decision / Abstain | ○ PARTIAL | ○ PARTIAL | ● IMPLEMENTED | ○ PARTIAL | ● DESIGN |
 
-```mermaid
-flowchart LR
-    A[価値ある情報] --> B[Signal Harvester\n収集・正規化・履歴・出典管理]
-    B --> C[検索・知識基盤\n構造化・検索・分析]
-    C --> D[AIエージェント\n推論・実行・意思決定支援]
+→ [詳細なCapability Map](capabilities/README.md)
 
-    E[AI開発基盤\n状態管理・検証・回復・CI] --> B
-    E --> C
-    E --> D
-    F[Review / Handoff Platform\n結果の照合・実状態確認] --> E
-    G[FormPilot\nデスクトップアプリ・永続化・回復・E2E] --> E
+## Products / Systems
+
+### 1. AI Development Foundation / Review-Handoff Platform
+**AIに仕事を任せる工程そのものを安全にする基盤。**
+
+Goal / Requirement / Gate / Readback / Review / Recovery / Handoffを扱い、AIやCIの自己申告ではなく外部の実状態を根拠に受入を判断します。
+
+**Status:** Core contracts **IMPLEMENTED** / Live dispatch **intentionally blocked or externally coordinated**
+
+→ [Project Detail](projects/01_ai_development_foundation.md)
+
+### 2. Signal Harvester / ICP
+**AIが何を根拠として知っているかを壊さない情報基盤。**
+
+取得した情報をEvidence / Provenance / History / Delta / as-ofとともに保持し、後から再検証できる形にします。
+
+**Status:** Core collection / replay / evidence **IMPLEMENTED** / External observation expansion **PARTIAL**
+
+→ [Project Detail](projects/02_signal_harvester.md)
+
+### 3. FX Intelligence / TPI
+**仮説を、結果を見てから都合よく変えずに評価する検証システム。**
+
+USD/JPYデータを対象に、Hypothesis / Backtest / Holdout / Evaluation / contamination preventionを扱います。
+
+**Status:** Research / evaluation core v0.3.2 **IMPLEMENTED**
+
+→ [Project Detail](projects/03_fx_intelligence.md)
+
+### 4. FormPilot
+**状態・回復・外部操作境界を持つWindows業務自動化。**
+
+Desktop / Local DB / Queue / Recovery / Authorization / E2Eを扱い、外部操作へ進む前の安全なSoftware Deliveryを検証します。
+
+**Status:** Confirmed baseline through Phase 4 **IMPLEMENTED** / later automation phases **PARTIAL / under validation**
+
+→ [Project Detail](projects/04_formpilot.md)
+
+## Products are connected by learning, not just code
+
+```text
+Failure
+  ↓
+Finding
+  ↓
+Design Principle
+  ↓
+Gate / Rule / Evaluation
+  ↓
+Shared Development Foundation
+  ↓
+Other Productsへ再適用
 ```
 
-4つのプロジェクトは別々の実験ではなく、**情報を取得し、構造化し、AIが利用し、本番で安全に動かすために必要な能力を横断して試しているPortfolio**です。
+各Productで見つかった失敗を、その場限りの修正で終わらせず、共通Rule・Gate・Evaluation・Regressionへ戻すことを重視しています。
 
-## 開発スタイル
+## Design North Star — Akashic Record
 
-詳細な実装やレビュー支援にはClaude Code / Codexを積極的に使っています。
+Evidenceを土台に、複数AIによる分析・反証・評価からDecision Opportunity / Learningへつなぐ長期的なDesign Explorationです。
 
-一方で、以下は自分の責任範囲として扱っています。
+**Current status:** **DESIGN**  
+特にMulti-Agent competition / routing / cross-critique / advanced evaluationは、まだ未解決領域として明示しています。
 
-- 問題設定・要件整理
-- 設計方針・受入条件の定義
-- 実装タスクの分解とAIへの委譲
-- 生成された差分の確認
-- テスト・CI・回帰確認
-- 不具合の原因切り分け
-- 修正方針・受入可否の判断
-- 実装結果と設計意図の整合確認
+→ [Akashic Record](vision/akashic-record.md)
 
-AIが生成したコードをそのまま採用するのではなく、**仕様・差分・テスト・CI・実際のシステム状態を確認してから受け入れる**ことを重視しています。
+## Selected Implementation Evidence
 
-## 主要プロジェクト
+主要Project本体はprivate repositoryで継続開発しています。公開Portfolioでは、考え方を検証可能にするため、依存関係を減らした実装サンプルとTestを置いています。
 
-| プロジェクト | 主なテーマ | 技術・設計上の要点 |
-|---|---|---|
-| [AI Development Foundation / Loop Engineering](projects/01_ai_development_foundation.md) | AI開発基盤・実行制御 | タスク状態、検証、回復、CI、不明時停止、AIレビュー連携 |
-| [Signal Harvester](projects/02_signal_harvester.md) | 情報収集・データ基盤 | GitHub / Hacker News / RSS / Web、正規化、履歴、差分、出典管理、再現 |
-| [Review / Handoff Platform](projects/03_review_handoff_platform.md) | AI実装・レビュー連携 | 入出力の紐付け、GitHub実状態確認、古い結果の拒否、結果不明時の再実行防止 |
-| [FormPilot](projects/04_formpilot.md) | Windowsデスクトップアプリ | Electron / React、SQLite / PostgreSQL、実行キュー、回復、可観測性、E2E |
+- [Result Apply Guard — Python](samples/result_apply_guard.py)
+- [Evidence Verification — JavaScript](samples/evidence_verification.js)
+- [Automation Retry Policy — TypeScript](samples/automation_retry_policy.ts)
 
-## 公開コードサンプル
+これらのコード生成・直接実装はCoding Agentを利用し、本人は要件・設計・テスト観点・Review・Acceptanceを担当しています。
 
-主要プロジェクト本体は非公開ですが、実装内容を確認できるように、実際の実装から本質部分を抜き出した公開用コードを置いています。
+## Implementation environment used in these projects
 
-| サンプル | 言語 | 内容 |
-|---|---|---|
-| [AI実装結果の安全な適用](samples/result_apply_guard.py) | Python | 対象Git Headの一致確認、変更範囲制限、状態遷移、結果不明時の再実行防止 |
-| [取得証拠の検証と再現](samples/evidence_verification.js) | JavaScript | SHA-256による改ざん検知、引用位置の固定、保存済みデータからの再検証 |
-| [自動処理の再試行ポリシー](samples/automation_retry_policy.ts) | TypeScript | 失敗理由、処理状態、自動再試行・手動確認の判定 |
+Python / TypeScript / JavaScript / Node.js / Electron / React / SQLite / PostgreSQL / Git / GitHub / CI / Unit Test / E2E / Regression Test
 
-詳細: [公開コードサンプルについて](samples/README.md)
-
-## 実装・品質確認の例
-
-- AI開発基盤で、レビュー実行の安全性に関するテスト **23 / 23 PASS**
-- 回帰検証で **正常系1件 + 意図的な破壊ケース37件** を検証
-- Signal Harvesterで、履歴・差分・取得証拠・出典情報・ネットワーク再取得なしの再検証を実装
-- Review / Handoff Platformで、古いGit Head・許可範囲外の変更・不正な状態遷移を拒否
-- FormPilotで、型検査 / Lint / Unit Test / Build / 認証付きElectron E2EをCIで検証
-- この公開Portfolio自身でもGitHub Actionsで公開コードサンプルを自動テスト
-
-## 技術スタック
-
-- **言語**: Python, TypeScript / JavaScript, SQL
-- **アプリケーション**: Node.js, Electron, React
-- **データベース**: SQLite, PostgreSQL
-- **開発・品質**: Git, GitHub, GitHub Actions, Unit Test, E2E Test, Regression Test
-- **AI開発支援**: Claude Code, Codex
-
-## 開発で重視していること
-
-### 1. 「動いた」で終わらせない
-正常系だけでなく、状態不整合、結果不明、再試行、障害、権限境界、回帰まで明示的に扱います。
-
-### 2. 後から検証できる証拠を残す
-「実装した」という自己申告だけではなく、テスト、CI、PR、差分、状態遷移、外部システムの実状態などで確認できる形を残します。
-
-### 3. AI生成コードを鵜呑みにしない
-AI出力は候補実装として扱い、差分・仕様適合・テスト・CIを確認してから受け入れます。
-
-### 4. 単発対応を再利用できる仕組みにする
-その場限りの修正ではなく、共通ルール、検証処理、状態モデル、データ処理、回帰テストへ落とし込むことを意識しています。
-
-## ソースコードについて
-
-主要プロジェクトは非公開リポジトリで継続開発しています。
-
-この公開Portfolioでは、**設計意図・アーキテクチャ・自分の役割・検証結果・公開可能な実装サンプル**を確認できる形にしています。
-
-## 今後深めたい領域
-
-**価値ある情報の収集 → 構造化 → 検索・分析 → AIエージェント → 本番運用 → 意思決定**
-
-まで一貫して扱う、Applied AI / AI Agent / Data Intelligence / FDE領域で、本番環境での実装経験を深めたいと考えています。
+※上記は**個人開発で利用している実装環境**であり、手書き実装スキル一覧を意味しません。
