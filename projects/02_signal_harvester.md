@@ -13,6 +13,12 @@ GitHub / Hacker News / RSS / Webなどから情報を取得し、**出典・取�
 
 を後から再検証できることを重視しています。
 
+## 検証Evidence
+
+現行リポジトリでは、**16 test files / 146 test cases**を確認できます。
+
+GitHub / Hacker News / RSS / Atom / Web Retrieval、履歴・Replay・Evidence・Source Registry等を対象に、**取得結果だけでなく再検証可能性や出典管理まで含めて**テストしています。
+
 ## このプロダクトで実践・検証している領域
 
 | 領域 | 現在地 |
