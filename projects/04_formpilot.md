@@ -1,75 +1,81 @@
 # FormPilot
 
-**Status:** Confirmed baseline through Phase 4 — **IMPLEMENTED**  
-**Later Form Automation phases:** **PARTIAL / under design & validation**
+**現在の状態:** Phase 4までの基盤は **実装済み**  
+**後続のフォーム自動化機能:** 一部実装・設計 / 検証継続中
 
-## What this project is
+## 何をするものか
 
-Windows Desktopで、入力データ・Campaign・Queue・Authorization・Recovery等を扱う業務自動化Projectです。
+Webフォームへの入力・送信を安全に自動化するための**Windows業務自動化アプリ**です。
 
-このPortfolioでは特に、**外部世界へ影響する処理を行うSoftwareを、State / Gate / Recovery / E2E込みでどう安全に作るか**を示すProjectとして位置づけています。
+このPortfolioでは特に、**外部へ影響する処理を行うSoftwareを、状態管理・復旧・権限・E2Eまで含めてどう安全に作るか**を示すプロダクトとして位置づけています。
 
-## Capabilities demonstrated
+## このプロダクトで扱っている能力
 
-| Capability | Depth / Status |
+| 能力 | 現在地 |
 |---|---|
-| State / Gate / Authority | ● IMPLEMENTED |
-| Recovery / Retry | ● IMPLEMENTED |
-| Observability | ● IMPLEMENTED |
-| Evaluation / E2E | ● IMPLEMENTED |
-| Local Persistence | ● IMPLEMENTED |
-| External Action Safety | ● PARTIAL |
-| AI / Workflow Orchestration | ○ PARTIAL |
+| 状態・進行条件・権限管理 | ● 実装済み |
+| 失敗時の復旧・再試行 | ● 実装済み |
+| 可観測性 | ● 実装済み |
+| 評価・E2E | ● 実装済み |
+| Local保存 | ● 実装済み |
+| 外部操作の安全設計 | ● 一部実装 |
+| AI / Workflow制御 | ○ 一部実装 |
 
-## Implemented baseline
+## 実装済みの基盤
 
-- Electron + sandboxed React renderer
-- narrow IPC bridge
-- SQLite migration / campaign / target persistence
-- crash-safe queue / recovery foundation
-- PostgreSQL-backed workspace authentication / roles
-- sender / template / schedule / pacing / test-mode settings
-- Typecheck / Lint / Unit Test / Build / Desktop validation
+- Electron + ReactのDesktop構成
+- 制限したIPC Bridge
+- SQLite migration / Campaign / Target保存
+- Crash-safeなQueue / Recovery基盤
+- PostgreSQLを使ったWorkspace認証・Role管理
+- Sender / Template / Schedule / Pacing / Test mode設定
+- Typecheck / Lint / Unit Test / Build / Desktop検証
 
-Confirmed Phase 4では、外部HTTP/HTTPSアクセスや実送信を行わない境界を維持しています。
+Phase 4までの確定Baselineでは、外部HTTP/HTTPSアクセスや実送信を行わない安全境界を維持しています。
 
-## Why it matters
+## なぜこの設計が必要か
 
-外部フォーム送信のような操作では、「処理を開始したか」「実行されたか」「結果不明か」を間違えると、二重送信等の実世界影響につながります。
+外部フォーム送信のような操作では、
+
+- 処理を開始したか
+- 実行されたか
+- 結果が不明か
+
+を間違えると、二重送信など実世界への影響につながります。
 
 そこで、
 
-- State
+- 状態
 - Queue
 - Checkpoint
-- Reason Code
-- Retry safety
-- Authorization
-- Readback
+- 失敗理由
+- 再試行可否
+- 権限
+- 実状態確認
 - E2E
 
-を分離して扱う方向で段階的に設計しています。
+を分けて段階的に設計しています。
 
-## My responsibility
+## 本人の担当
 
-- Product / Phase requirement
-- State / persistence / authorization requirement
+- 製品要件・Phase設計
+- 状態・保存・権限要件の整理
 - Coding Agentへの実装委譲
 - Migration / Recovery / E2E観点
-- CI / regression review
-- Phase scope control
-- Acceptance / Redesign判断
+- CI / 回帰確認
+- Phase単位のScope管理
+- 受入 / 再設計判断
 
 直接のコード生成は主にCoding Agentを利用しています。
 
-## Connections
+## 他プロダクトとのつながり
 
-- **AI Development Foundation / RHP** — Gate / Readback / RecoveryをSoftware Deliveryへ適用
-- **Signal Harvester / ICP** — Observability / history / evidenceの考え方を共有
-- **Akashic Record** — 将来のDecision→Actionで必要になるExternal Action境界の学習へ接続
+- **AI開発基盤 / RHP** — 状態管理・実状態確認・復旧の考え方をSoftware Deliveryへ適用
+- **Signal Harvester / ICP** — 履歴・可観測性・根拠管理の考え方を共有
+- **Akashic Record** — 将来の「判断→実行」で必要になる外部操作境界へ接続
 
-## Current gaps
+## まだできていないこと
 
-- Portfolioで確認できる確定BaselineではReal Form Submissionは未実装
-- Deterministic Form Engine以降は設計・検証が継続中
-- AI browser fallbackは確定Baselineの実装対象外
+- 確定Baselineでは実フォーム送信は未実装
+- Deterministic Form Engine以降は設計・検証継続中
+- AI BrowserによるFallbackは確定Baselineの実装対象外
