@@ -1,40 +1,40 @@
-# Case Study — Do not improve an experiment after seeing the answer
+# 失敗事例 — 結果を見た後で条件を変えると、評価を都合よくできてしまう
 
-**Theme:** Holdout / Experiment Integrity / Decision
+**テーマ:** 未使用データ / 実験の信頼性 / 判断
 
-## Situation
+## 何が起きるか
 
-Evaluation結果を観測した後で条件や評価ルールを変更すると、その変更は同じExperimentの純粋な改善なのか、結果への適合なのか区別できなくなります。
+評価結果を観測した後で条件や評価ルールを変更すると、その変更が本当に改善なのか、既に見た結果への適合なのか区別できなくなります。
 
-## Risk
+## 何が危険か
 
-後知恵で条件を調整すると、Backtestや評価値が良く見えても再現性・一般化性能を失います。
+後知恵で条件を調整すると、バックテストや評価値が良く見えても、再現性・一般化性能を失います。
 
-## Decision
+## どう変えたか
 
 FX Intelligence / TPIでは、
 
-- Discovery
-- Validation
-- Holdout
-- Evaluation criteria
-- Observation state
+- 仮説を作る期間
+- 検証期間
+- 最後まで未使用にするデータ
+- 評価基準
+- どこまで結果を観測済みか
 
-を分離。
+を分離しました。
 
-結果観測後の条件変更を、元Experimentの正当な継続ではなく**contamination risk**として扱う方針を採用しています。
+結果を見た後の条件変更は、元の実験の正当な継続ではなく**評価汚染の可能性**として扱います。
 
-## Learning transferred
+## 他のAI評価へどうつながるか
 
-この考え方は市場データだけでなく、将来のLLM / Agent Evaluationでも、
+この考え方は市場データだけでなく、将来のLLM / Agent評価でも、
 
-- Benchmark leakage
-- Judge tuning after seeing results
-- Selection bias
-- Holdout misuse
+- 評価データの見過ぎ
+- 結果を見た後のJudge調整
+- 候補選択の偏り
+- 未使用データの使い回し
 
 を避ける設計へ接続できます。
 
-## Capability link
+## 関連する能力
 
-**Experiment → Holdout → Evaluation → Falsification → Abstain / Decision**
+**実験設計 → 未使用データ → 評価 → 反証 → 判断 / 保留**
