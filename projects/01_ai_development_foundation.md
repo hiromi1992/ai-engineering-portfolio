@@ -1,95 +1,96 @@
-# AI Development Foundation / Review-Handoff Platform
+# AI開発基盤 / Review-Handoff Platform
 
-**Status:** Core integrity / result-application contracts — **IMPLEMENTED**  
-**Live dispatch:** **PARTIAL / intentionally constrained**
+**現在の状態:** 主要な整合性確認・結果適用の仕組みは **実装済み**  
+**実行部分:** 一部実装。安全条件を満たさない自動実行は意図的に制限
 
-## What this project is
+## 何をするものか
 
-AI/Coding Agentへ開発を委譲するときに、**「AIが完了と言った」ことではなく、実際のRepository・Revision・CI・変更範囲を確認して受入する**ための共通基盤です。
+AIやCoding Agentへ開発を任せるときに、**「AIが完了と言った」ことではなく、実際のRepository・対象Revision・CI・変更範囲を確認して受入する**ための共通基盤です。
 
 ```text
-Goal / Requirement
-      ↓
-Plan / Gate
-      ↓
-Coding Agent
-      ↓
-Test / Review
-      ↓
-Readback
-      ↓
-Accept / Reject / Recover
-      ↓
-Handoff / Learning
+目的・要件
+   ↓
+計画・進行条件
+   ↓
+Coding Agentへ実装委譲
+   ↓
+テスト・レビュー
+   ↓
+実状態の確認
+   ↓
+受入 / 却下 / 復旧
+   ↓
+引継ぎ・学習
 ```
 
-## Capabilities demonstrated
+## このプロダクトで扱っている能力
 
-| Capability | Depth / Status |
+| 能力 | 現在地 |
 |---|---|
-| AI Delivery Control | ● IMPLEMENTED |
-| State / Gate / Authority | ● IMPLEMENTED |
-| Evaluation / Acceptance | ● IMPLEMENTED |
-| Independent Review | ● IMPLEMENTED |
-| Recovery / Retry | ● IMPLEMENTED |
-| Evidence / Readback | ● IMPLEMENTED |
-| Agent Orchestration | ● PARTIAL |
-| Dynamic Routing | △ DESIGN |
+| AI開発の進行管理 | ● 実装済み |
+| 状態・進行条件・権限管理 | ● 実装済み |
+| 評価・受入判断 | ● 実装済み |
+| 独立レビュー | ● 実装済み |
+| 失敗時の復旧・再試行 | ● 実装済み |
+| 実状態の確認（Readback） | ● 実装済み |
+| 複数AI / Workflow制御 | ● 一部実装 |
+| 動的なAI振り分け | △ 設計段階 |
 
-## Problem
+## 解きたかった問題
 
-AI-assisted developmentでは、コード生成以外に次の問題が起きます。
+AI支援開発では、コード生成以外に次の問題が起きます。
 
 - 実行途中で止まり、どこまで完了したか分からない
 - AIが成功と返してもGitHub上の実状態と一致しない
-- 古いRevisionへのReviewを現在の結果として扱ってしまう
-- 書き込み結果不明のまま再実行して二重変更する
+- 古いRevisionへのレビューを現在の結果として扱ってしまう
+- 書き込み結果が不明なまま再実行して二重変更する
 - 許可していない範囲まで変更が広がる
 
-## Key decisions
+## 主な設計判断
 
-### External state is authority
-AI / CI / Reviewerの自己申告だけで終了状態を確定しません。Repositoryや対象Revisionなどの実状態をReadbackして判断します。
+### 1. AIの自己申告を最終判断にしない
+AI / CI / Reviewerが「成功」と返しても、それだけでは完了扱いしません。Repositoryや対象Revisionなどの実状態を確認して判断します。
 
-### Unknown is a real state
-結果不明を成功・失敗へ丸めず、確認できるまでBlind retryを止めます。
+### 2. 「結果不明」を独立した状態として扱う
+結果不明を成功・失敗のどちらかへ無理に寄せず、実状態を確認するまで再実行を止めます。
 
-### Scope is bound before execution
-対象Repository / Task / Revision /変更可能範囲を先に固定し、古い結果や範囲外変更を拒否します。
+### 3. 実行前に対象範囲を固定する
+対象Repository・Task・Revision・変更可能範囲を先に決め、古い結果や範囲外変更を拒否します。
 
-### Dispatch authority is separated
-RHP自身はCodexやGitHubへの無制限なLive dispatch権限を持ちません。現在の実装ではDry-run / coordinator境界を明示しています。
+### 4. 自動実行できる範囲を分離する
+RHP自身にはCodexやGitHubへ無制限に書き込む権限を持たせず、安全条件を満たさない場合は自動実行を止める設計にしています。
 
-## Evidence
+## 検証していること
 
-- Review安全性のTest
-- stale Head / allowlist escape / illegal state transitionの拒否
-- OUTCOME_UNKNOWNからのBlind retry防止
-- GitHub Result Readback
-- Ubuntu / Windowsでの検証
-- Billing / Usage readbackが安全条件を証明できない場合のfail-closed
+- 古いGit Headを拒否する
+- 許可範囲外の変更を拒否する
+- 不正な状態遷移を拒否する
+- 結果不明のまま再実行しない
+- GitHub上の実状態を再取得して確認する
+- Ubuntu / Windows双方で確認する
+- 安全条件を証明できない場合は自動実行を止める
 
-## My responsibility
+## 本人の担当
 
 - 問題定義
-- Requirement / State model / Authority boundary設計
+- 要件・状態モデル・権限境界の設計
 - Coding Agentへの実装委譲
-- Test / Regression観点の設計
-- Diff / CI / Readback確認
-- Findingの分析
-- Acceptance / Reject / Redesign判断
+- テスト・回帰観点の設計
+- 差分・CI・実状態の確認
+- 問題原因の分析
+- 受入 / 却下 / 再設計判断
 
 直接のコード生成は主にCoding Agentを利用しています。
 
-## Connections
+## 他プロダクトとのつながり
 
-- **Signal Harvester / ICP** — Evidence / Provenance / replayの考え方を共有
-- **FX Intelligence / TPI** — Evidenceで受入し、評価汚染を防ぐ考え方へ接続
-- **FormPilot** — State / Gate / Recovery / External Action境界へ適用
-- **Akashic Record** — 将来の複数AI orchestration / evaluation基盤へ接続
+- **Signal Harvester / ICP** — 根拠・履歴・再検証の考え方を共有
+- **FX Intelligence / TPI** — 結果を自己申告ではなく検証可能な根拠で受け入れる考え方へ接続
+- **FormPilot** — 状態管理・進行条件・復旧・外部操作境界へ応用
+- **Akashic Record** — 将来の複数AI制御・評価基盤へ接続
 
-## Current gaps
+## まだできていないこと
 
-- Repository単体ではLive Codex dispatchを所有しない
-- 本格的なMulti-Agent competition / debateは未実装
-- Dynamic model routingはDesign段階
+- Repository単体での完全自動なCodex実行
+- 本格的な複数AIの競合・討論
+- 問題に応じたAI / Modelの動的な振り分け
