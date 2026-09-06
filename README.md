@@ -10,7 +10,7 @@
 
 | プロジェクト | 何を作っているか | 現在の状態 |
 |---|---|---|
-| [AI開発基盤 / Review-Handoff Platform](projects/01_ai_development_foundation.md) | Coding Agentへ実装を任せた後、Git・テスト・実際の変更内容を確認して受入可否を判断する共通基盤 | 主要機能を実装済み |
+| [AI開発基盤 / Review-Handoff Platform](projects/01_ai_development_foundation.md) | Coding Agentへ実装を任せた後、Git・テスト・実際の変更内容を確認して受け入れるかを判断する共通基盤 | 主要機能を実装済み |
 | [Signal Harvester / ICP](projects/02_signal_harvester.md) | WebやGitHub等から情報を収集し、出典・取得時点・履歴・差分とともに保存する情報基盤 | 主要機能を実装済み、観測範囲を拡張中 |
 | [FX Intelligence / TPI](projects/03_fx_intelligence.md) | USD/JPYを対象に、未使用データを残したまま仮説とバックテストを検証する研究基盤 | 研究・評価基盤を実装済み |
 | [FormPilot](projects/04_formpilot.md) | Webフォーム業務自動化に向け、状態管理・復旧・実行履歴を扱うWindowsアプリ | 基盤を実装済み、自動実行を検証中 |
@@ -19,7 +19,7 @@
 ## このPortfolioで見てほしいこと
 
 - **課題を要件へ落とす**：曖昧な目的や業務課題を、実装可能な要件・仕様・受入条件へ整理する
-- **AIへ実装を任せる**：Coding Agentへ実装を委譲しつつ、対象範囲や完了条件は人側で決める
+- **AIへ実装を任せる**：Coding Agentへ実装を委譲しつつ、対象範囲や完了条件は自分で定義する
 - **結果を確認して受け入れる**：AIやCIの「成功」だけで終わらせず、Git・テスト・実際の変更内容まで確認する
 - **失敗から設計を変える**：不具合を個別修正で終わらせず、確認ルールや回帰テストへ反映する
 - **検証条件を守る**：分析では未使用データや評価条件を分け、結果を見た後の都合のよい調整を避ける
