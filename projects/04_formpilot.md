@@ -11,7 +11,7 @@ Webフォーム業務の自動化に向けて、**入力データ・状態・Que
 
 ## 検証Evidence
 
-現行リポジトリでは、**20 test files / 69 test cases**を確認できます。
+非公開の現行開発リポジトリでは、**20 test files / 69 test cases**を確認できます。
 
 Queue / Recovery / 認証 / Persistence / Automation Observability / UI等を対象に、**外部操作を実装する前段の状態管理と復旧基盤**を検証しています。
 
