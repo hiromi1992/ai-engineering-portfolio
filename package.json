@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test:js": "node --test samples/evidence_verification.test.js"
+    "test:js": "node --test samples/evidence_verification.test.js",
+    "test:ts": "node --experimental-strip-types --test samples/automation_retry_policy.test.ts"
   }
 }
