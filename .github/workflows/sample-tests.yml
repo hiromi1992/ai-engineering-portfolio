@@ -27,3 +27,6 @@ jobs:
 
       - name: Test JavaScript sample
         run: npm run test:js
+
+      - name: Test TypeScript sample
+        run: npm run test:ts
