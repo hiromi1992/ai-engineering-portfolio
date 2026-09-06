@@ -28,7 +28,7 @@
 |---|---|
 | [AI開発基盤 / RHP](../projects/01_ai_development_foundation.md) | 8 test files / 90 test cases |
 | [Signal Harvester / ICP](../projects/02_signal_harvester.md) | 16 test files / 146 test cases |
-| [FX Intelligence / TPI](../projects/03_fx_intelligence.md) | 8 test files / 44 test cases + 46 Acceptance Criteria |
+| [FX Intelligence / TPI](../projects/03_fx_intelligence.md) | 8 test files / 44 test cases + 46項目の受入条件 |
 | [FormPilot](../projects/04_formpilot.md) | 20 test files / 69 test cases |
 
 件数そのものを成果とは考えていません。異常系や境界条件まで、どの程度検証しているかの参考として掲載しています。
