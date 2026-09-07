@@ -1,5 +1,7 @@
-# Review-Handoff Platform
+# Review-Handoff Platform（旧URL）
 
-Review-Handoff Platformの説明は、現在 [AI開発基盤 / Review-Handoff Platform](01_ai_development_foundation.md) に統合しています。
+このページは、過去に共有したURLを切らさないために残している案内ページです。
 
-このファイルは旧リンクを切らさないために残しています。
+Review-Handoff Platformの内容は、現在 **AI開発基盤の一部として統合**しています。
+
+→ [現在の説明：AI開発基盤 / Review-Handoff Platform](01_ai_development_foundation.md)

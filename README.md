@@ -1,4 +1,4 @@
-# AI Product / FDE Portfolio
+# AI Product / AI Solution Portfolio
 
 **新規事業：約4年｜開発PM：約2年｜AI個人開発：2026年7月〜**
 
@@ -12,10 +12,10 @@
 
 | プロジェクト | 何を作っているか | 現在の状態 |
 |---|---|---|
-| [AI開発基盤 / Review-Handoff Platform](projects/01_ai_development_foundation.md) | Coding Agentへ実装を任せた後、Git・テスト・実際の変更内容を確認して受け入れるかを判断する共通基盤 | 主要機能を実装済み |
-| [Signal Harvester / ICP](projects/02_signal_harvester.md) | WebやGitHub等から情報を収集し、出典・取得時点・履歴・差分とともに保存する情報基盤 | 主要機能を実装済み、観測範囲を拡張中 |
-| [FX Intelligence / TPI](projects/03_fx_intelligence.md) | USD/JPYを対象に、未使用データを残したまま仮説とバックテストを検証する研究基盤 | 研究・評価基盤を実装済み |
-| [FormPilot](projects/04_formpilot.md) | Webフォーム業務自動化に向け、状態管理・復旧・実行履歴を扱うWindowsアプリ | 基盤を実装済み、自動実行を検証中 |
+| [AI開発基盤 / Review-Handoff Platform](projects/01_ai_development_foundation.md) | Coding Agentへ実装を任せた後、Git・テスト・実際の変更内容を確認して受け入れるかを判断する共通基盤 | 非公開の開発リポジトリで主要機能を実装・検証済み |
+| [Signal Harvester / ICP](projects/02_signal_harvester.md) | WebやGitHub等から情報を収集し、出典・取得時点・履歴・差分とともに保存する情報基盤 | 非公開の開発リポジトリで主要機能を実装・検証済み、観測範囲を拡張中 |
+| [FX Intelligence / TPI](projects/03_fx_intelligence.md) | USD/JPYを対象に、未使用データを残したまま仮説とバックテストを検証する研究基盤 | 非公開の開発リポジトリで研究・評価基盤を実装・検証済み |
+| [FormPilot](projects/04_formpilot.md) | Webフォーム業務自動化に向け、状態管理・復旧・実行履歴を扱うWindowsアプリ | 非公開の開発リポジトリで基盤を実装・検証済み、自動実行を検証中 |
 | [Akashic Record](vision/akashic-record.md) | 上記で得た知見を、複数AIによる分析・評価・意思決定支援へつなぐ長期構想 | 設計段階 |
 
 ## このPortfolioで見てほしいこと
