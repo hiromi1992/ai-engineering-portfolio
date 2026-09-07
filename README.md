@@ -1,4 +1,4 @@
-# AI Product / FDE Portfolio
+# AI Product / AI Solution Portfolio
 
 **新規事業：約4年｜開発PM：約2年｜AI個人開発：2026年7月〜**
 
