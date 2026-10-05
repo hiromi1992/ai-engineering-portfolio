@@ -148,6 +148,11 @@ GitHub / Hacker News / RSS / Atom / Web取得、履歴、差分、保存済み�
 - テスト・再検証・回帰条件の設計
 - 仕様と実装の差分確認、修正判断
 
+## 公開コードサンプル
+
+- [ICPの候補→検証→昇格モデル](../samples/icp_data_model.js)
+- [取得情報の根拠確認](../samples/evidence_verification.js)
+
 ## 関連する設計原則
 
 - [AIシステム設計で重視していること](../principles/ai_system_design.md)
