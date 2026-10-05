@@ -73,6 +73,7 @@ ICPで集めた情報をそのまま確定事実にはせず、検証済みの�
 
 - [AI実装結果を安全に適用する仕組み — Python](samples/result_apply_guard.py)
 - [取得した情報の根拠を再検証する仕組み — JavaScript](samples/evidence_verification.js)
+- [ICPの候補→検証→昇格モデル — JavaScript](samples/icp_data_model.js)
 - [自動処理の再試行可否を判断する仕組み — TypeScript](samples/automation_retry_policy.ts)
 
 → [サンプルの説明](samples/README.md)
